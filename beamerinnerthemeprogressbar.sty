@@ -1,0 +1,342 @@
+\ProvidesPackage{beamerinnerthemeprogressbar}[2007/06/21]
+
+
+% Beamer theme by Sylvain Bouveret <sylvain[dot]bouveret[aT]cert[DoT]fr>
+% jun. 2010 version 0.41
+%
+% based on the LaTeX-Beamer package :
+% Copyright 2003 by Till Tantau <tantau@users.sourceforge.net>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+\RequirePackage{tikz}
+\usetikzlibrary{fadings}
+\RequirePackage{ifthen}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Processing options...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\def\progressbar@headline{none}%
+\def\progressbar@frametitle{picture-section}%
+\def\progressbar@imagename{images/tree04}%
+\def\progressbar@titlepage{picture}%
+\define@key{progressbar}{headline}[none]{%
+  \def\progressbar@headline{#1}%
+}
+\define@key{progressbar}{frametitle}[picture]{%
+  \def\progressbar@frametitle{#1}%
+}
+\define@key{progressbar}{imagename}{%
+  \def\progressbar@imagename{#1}%
+  \pgfdeclareimage[width=0.12\textwidth,interpolate=true]{headlineimage}{\progressbar@imagename}
+}
+\define@key{progressbar}{titlepage}[picture]{%
+  \def\progressbar@titlepage{#1}%
+}
+
+\def\progressbaroptions#1{\setkeys{progressbar}{#1}}
+
+\def\insertintermediateframenumber{\inserttotalframenumber}
+
+
+% This piece of code is just to make the code Babel-compliant with every
+% language.
+% It comes from:
+% http://forum.mathematex.net/latex-f6/beamer-et-shorthandoff-t3851.html
+\makeatletter
+\newboolean{@twopt} \setboolean{@twopt}{false}
+\newcommand*{\twoptoff}{\ifnum \catcode`\;=13 \catcode`\;=12 \setboolean{@twopt}{true} \fi}
+\newcommand*{\twopton}{\if@twopt \catcode`\;=13 \setboolean{@twopt}{false}  \fi}
+%
+%
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Bibliography...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\biblio}[1]{
+  \begin{center}
+    \usebeamercolor{block body}
+    \begin{tikzpicture}
+      \draw node[draw=black!20!bg, fill=bg, rounded corners=2pt] {\parbox{0.95\textwidth}{\putbib[#1]\vskip0.2cm}};
+    \end{tikzpicture}
+    \twopton{}
+\end{center}
+}
+
+\defbeamertemplate*{bibliography item}{progressbar theme}{
+  \begin{tikzpicture}[rounded corners=1pt]
+    \useasboundingbox (0, 0.2) rectangle (0.5, 0.7);
+    \fill[fill=structure.fg!25!structure.bg] (0, 0.25) rectangle (0.4, 0.5);
+    \shade[bottom color=structure.bg,top color=structure.fg!25!structure.bg] (0, 0) -- (0.3, 0) -- (0.4, 0.12) -- (0.4, 0.3) -- (0, 0.3) -- cycle;
+    \shade[left color=structure.bg,right color=structure.fg!30!structure.bg] (0,0.27) .. controls (0.25,0.25) .. (0.4,0.5) -- (0,0.5) -- cycle;
+    \fill[fill=structure.bg!80!structure.fg] (0,0) rectangle (0.3,0.05);
+    \shade[left color=structure.bg!95!structure.fg,right color=structure.bg!80!structure.fg] (0,0) rectangle (0.05,0.5);
+    \shade[left color=structure.bg,right color=structure.bg!50!structure.fg,shading angle=45] (0.3,0) -- (0.3,0.12) -- (0.4,0.12) -- cycle;
+    \draw[draw=structure.fg!35!structure.bg] (0,0) -- (0.3,0) -- (0.4,0.12) -- (0.4,0.5) -- (0,0.5) -- cycle;
+    \draw[draw=structure.fg!35!structure.bg](0.3,0) -- (0.3,0.12) -- (0.4,0.12);
+  \end{tikzpicture}
+}
+
+\def\bibitem{\@ifnextchar<{\beamer@bibitem@store}{\gdef\beamer@bibstore{}\beamer@plainbibitem}}
+\def\beamer@bibitem@store<#1>{\gdef\beamer@bibstore{<#1>}\beamer@plainbibitem}
+\def\beamer@plainbibitem{\@ifnextchar[\@lbibitem\beamer@bibitem}
+\def\@lbibitem[#1]#2{\expandafter\item\beamer@bibstore[\@biblabel{#1}\hfill]%
+  \@ifundefined{beamerbib@#2@\the\c@framenumber}{\if@filesw%
+    {\let\protect\noexpand%
+      \immediate\write\@auxout%
+      {\string\bibcite{#2}{\noexpand\hyperlink{beamerbib#2}{#1}}}}\fi%
+    \global\@namedef{beamerbib@#2@\the\c@framenumber}{\relax}%
+    \hypertarget{beamerbib#2}{}%
+    }{}%
+  \def\newblock{\beamer@newblock}\newblock\hskip-0.8ex}% This is really dirty !
+%  \hbox{}\ignorespaces}
+\def\beamer@bibitem#1{\@bibitem{#1}\ignorespaces}
+\def\@bibitem#1{\expandafter\item\beamer@bibstore\@ifundefined{beamerbib@#1@\the\c@framenumber}%
+  {\if@filesw \immediate\write\@auxout
+    {\string\bibcite{#1}{\noexpand\hyperlink{beamerbib#1}{\the\value{\@listctr}}}}\fi%
+    \global\@namedef{beamerbib@#1@\the\c@framenumber}{\relax}%
+    \hypertarget{beamerbib#1}{}}%
+  {}%
+  \def\newblock{\beamer@newblock}\newblock}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Blocks...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%
+%% A factorized code for blocks (strictly equivalent to the following
+%% commented one, but cleaner)... By Cédric Mauclair (Onera)
+%%
+
+\newbox\progressbar@blockbox
+\newlength\progressbar@blockboxwidth
+\newlength\progressbar@blockboxheight
+
+\def\myunskip{\vskip0.1cm}
+\let\progressbar@origcramped=\beamer@cramped
+
+\newcommand{\defblock}[1][]{
+  \setbeamertemplate{block \ifx#1\@empty\else#1\space\fi begin}{%
+    \global\let\beamer@firstlineitemizeunskip=\myunskip%
+    \def\beamer@cramped{\itemsep0cm\topsep0cm\vskip-0.6cm\relax}%
+    \setbox\progressbar@blockbox=\hbox to 0.95\textwidth\bgroup\vbox\bgroup\raggedright\begin{minipage}{0.95\textwidth} \ifx\insertblocktitle\@empty\else{\usebeamerfont{block title\ifx#1\@empty\else\space#1\fi}\usebeamercolor[fg]{block title\ifx#1\@empty\else\space#1\fi}\insertblocktitle}\\[-0.3cm]\twoptoff{}% JustTo be "babel-safe"
+      \usebeamercolor{block title\ifx#1\@empty\else\space#1\fi} \tikz\draw[fg!50!bg] (0,0) -- (\textwidth,0);\twopton{}\\\fi\usebeamerfont{block body\ifx#1\@empty\else\space#1\fi}\usebeamercolor[fg]{block body\ifx#1\@empty\else\space#1\fi} } \setbeamertemplate{block \ifx#1\@empty\else#1\space\fi end}{%
+    \end{minipage}\egroup\egroup%
+    \usebeamercolor{block title\ifx#1\@empty\else\space#1\fi}
+    \begin{center}\begin{tikzpicture} \draw node[draw=fg!50!bg,fill=bg,rounded corners=2pt] {\box\progressbar@blockbox};
+      \end{tikzpicture} \end{center} } }
+
+\defblock
+\defblock[example]
+\defblock[alerted]
+
+%%
+%% A factorized code for blocks (strictly equivalent to the following
+%% commented one, but cleaner)... By Cédric Mauclair (Onera)
+%%
+
+%%%  \newbox\progressbar@blockbox
+%%%  \newlength\progressbar@blockboxwidth
+%%%  \newlength\progressbar@blockboxheight
+%%%  \tikzfading[name=fade out, inner color=transparent!0, outer color=transparent!100]
+%%%  
+%%%  \defbeamertemplate*{block begin}{progressbar theme}
+%%%  {
+%%%    \setbox\progressbar@blockbox=\hbox to 0.95\textwidth\bgroup\vbox\bgroup\raggedright\begin{minipage}{0.95\textwidth} \ifx\insertblocktitle\@empty\else{\usebeamerfont{block title}\usebeamercolor{block title}\emph{\insertblocktitle}}\\[-0.3cm]% JustTo be "babel-safe"
+%%%      \twoptoff{}\tikz\draw[black!20!bg] (0, 0) -- (\textwidth, 0);\twopton{}\fi\usebeamerfont{block body}
+%%%  }
+%%%  \defbeamertemplate*{block end}{progressbar theme}
+%%%  {
+%%%    \end{minipage}\egroup\egroup
+%%%  %   \progressbar@blockboxwidth=\wd\progressbar@blockbox
+%%%  %   \progressbar@blockboxheight=\ht\progressbar@blockbox
+%%%  %   \advance\progressbar@blockboxwidth by 0.4cm
+%%%  %   \advance\progressbar@blockboxheight by 0.4cm
+%%%  
+%%%    \usebeamercolor{block body}
+%%%    \begin{center}
+%%%      \begin{tikzpicture}
+%%%      \draw (0, 0) node[draw=fg!20!bg,fill=bg, rounded corners=2pt] (box) {\box\progressbar@blockbox};
+%%%      %% 
+%%%      %% The following code is dedicated to the outside shading of the
+%%%      %% blocks (but doesn't work yet, unfortunately)
+%%%      %%
+%%%      % \draw[use as bounding box] (box.south west) rectangle (box.north east);
+%%%  
+%%%      % \begin{scope}[even odd rule]
+%%%      %   \clip[rounded corners=2pt] (box.north west) rectangle (box.south east) (-10, -10) rectangle (10, 10) ;
+%%%  
+%%%      %   \fill [color=black!30!transparent, path fading=west] (box.north west) +(-0.1, 0) rectangle (box.south west);
+%%%      %   \fill [color=black!30!transparent, path fading=north] (box.north west) +(0, 0.1) rectangle (box.north east);
+%%%      %   \fill [color=black!30!transparent, path fading=east] (box.north east) +(0.1, 0) rectangle (box.south east);
+%%%      %   \fill [color=black!30!transparent, path fading=south] (box.south east) +(0, -0.1) rectangle (box.south west);
+%%%        
+%%%      %   \fill [color=black!30!transparent, path fading=fade out] (box.north west) +(-0.1, 0.1) rectangle +(0.1, -0.1);
+%%%      %   \fill [color=black!30!transparent, path fading=fade out] (box.north east) +(0.1, 0.1) rectangle +(-0.1, -0.1);
+%%%      %   \fill [color=black!30!transparent, path fading=fade out] (box.south east) +(0.1, -0.1) rectangle +(-0.1, 0.1);
+%%%      %   \fill [color=black!30!transparent, path fading=fade out] (box.south west) +(-0.1, -0.1) rectangle +(0.1, 0.1);
+%%%      % \end{scope}
+%%%      
+%%%    \end{tikzpicture}
+%%%  \end{center}
+%%%  }
+%%%  
+%%%  \defbeamertemplate*{block alerted begin}{progressbar theme}
+%%%  {
+%%%    \setbox\progressbar@blockbox=\hbox to 0.95\textwidth\bgroup\vbox\bgroup\raggedright\begin{minipage}{0.95\textwidth}{\usebeamerfont{block title alerted}\color{alerted text.fg}\insertblocktitle}\\[-0.3cm]\twoptoff{}% JustTo be "babel-safe"
+%%%      \usebeamercolor{block body alerted}
+%%%      \tikz\draw[fg!20!bg] (0, 0) -- (\textwidth, 0);\twopton{}\usebeamerfont{block body alerted}\usebeamercolor{block body}
+%%%  }
+%%%  \defbeamertemplate*{block alerted end}{progressbar theme}
+%%%  {
+%%%    \end{minipage}\egroup\egroup
+%%%    \usebeamercolor{block body alerted}
+%%%    \begin{center}\begin{tikzpicture}
+%%%      \draw node[draw=fg!20!bg,fill=bg, rounded corners=2pt] {\box\progressbar@blockbox};
+%%%    \end{tikzpicture}
+%%%  \end{center}
+%%%  }
+%%%  
+%%%  \defbeamertemplate*{block example begin}{progressbar theme}
+%%%  {
+%%%    \setbox\progressbar@blockbox=\hbox to 0.95\textwidth\bgroup\vbox\bgroup\raggedright\begin{minipage}{0.95\textwidth}{\usebeamerfont{block title example}\color{example text.fg}\insertblocktitle}\\[-0.3cm]\twoptoff{}% JustTo be "babel-safe"
+%%%      \usebeamercolor{block body example}
+%%%      \tikz\draw[fg!20!bg] (0, 0) -- (\textwidth, 0);\twopton{}\usebeamerfont{block body example}\usebeamercolor{block body}
+%%%  }
+%%%  \defbeamertemplate*{block example end}{progressbar theme}
+%%%  {
+%%%    \end{minipage}\egroup\egroup
+%%%    \usebeamercolor{block body example}
+%%%    \begin{center}\begin{tikzpicture}
+%%%      \draw node[draw=fg!20!bg,fill=bg, rounded corners=2pt] {\box\progressbar@blockbox};
+%%%    \end{tikzpicture}
+%%%  \end{center}
+%%%  }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Frame title...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\progressbar@separator{--}
+
+\ifx\progressbar@imagename\@relax
+\else
+\pgfdeclareimage[width=0.12\textwidth,interpolate=true]{headlineimage}{\progressbar@imagename}
+\fi
+\ifx\progressbar@frametitle\@relax
+\def\progressbar@frametitle{normal}
+\fi
+
+\defbeamertemplate*{frametitle}{progressbar theme}{
+\edef\tempa{normal}
+\ifx\progressbar@frametitle\tempa
+\begin{centering}
+  \textbf{\insertframetitle}
+  \par
+\end{centering}
+\else
+\edef\tempa{picture-subsection}
+\ifx\progressbar@frametitle\tempa
+\parbox[c]{0.13\textwidth}{\pgfuseimage{headlineimage}}
+\parbox[c]{0.85\textwidth}{
+  \usebeamercolor{frametitle}{\scriptsize \ifx\insertsection\@empty\ \else\insertsection\fi\ifx\insertsubsection\@empty\else\ \progressbar@separator\ \insertsubsection\fi}\\[-0.3cm]\rule{0.7\textwidth}{0.5pt}\par%\vskip-1cm\rule{0.7\textwidth}{0.5pt}\par
+  \textbf{\vphantom{Hp}\insertframetitle}
+}
+\else
+\parbox[c]{0.13\textwidth}{\pgfuseimage{headlineimage}}
+\parbox[c]{0.85\textwidth}{
+  \usebeamercolor{frametitle}{\scriptsize \ifx\insertsection\@empty\ \else\insertsection\fi}\\[-0.3cm]\rule{0.7\textwidth}{0.5pt}\par%\vskip-1cm\rule{0.7\textwidth}{0.5pt}\par
+  \textbf{\vphantom{Hp}\insertframetitle}
+}
+\fi
+\fi
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Items...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setbeamertemplate{items}[circle]
+%\setbeamertemplate{itemize item}{\begin{tikzpicture}\draw[draw=progressbar@bgblue!60!white,fill=progressbar@bgblue!40!white] (0, 0) circle (0.07);\end{tikzpicture}}
+\setbeamertemplate{itemize item}{
+  \renewcommand{\beamer@cramped}{\progressbar@origcramped}%
+  \global\let\beamer@firstlineitemizeunskip=\relax%
+  \begin{tikzpicture}\shade[ball color=fg!80!bg] (0, 0) circle (0.07);\draw[draw=fg!50!black!90!bg] (0, 0) circle (0.07);\end{tikzpicture}%
+}
+\setbeamertemplate{itemize subitem}{\begin{tikzpicture}\shade[ball color=fg!80!white] (0, 0) circle (0.05);\draw[draw=fg!50!black!90!bg] (0, 0) circle (0.05);\end{tikzpicture}}
+\setbeamertemplate{itemize subsubitem}{\begin{tikzpicture}\shade[ball color=fg!80!white] (0, 0) circle (0.05);\draw[draw=fg!50!black!90!bg] (0, 0) circle (0.05);\end{tikzpicture}}
+
+% \setbeamertemplate{enumerate item}{\raisebox{-0.4ex}{\begin{tikzpicture}\shade[ball color=structure.fg!80!white] (0, 0) circle (0.07);\draw  (0, 0) node [draw=structure.fg!50!black!90!bg, inner sep=1pt] {\tiny\color{white}\bf\insertenumlabel};\end{tikzpicture}}}
+% \setbeamertemplate{enumerate subitem}{\raisebox{-0.4ex}{\begin{tikzpicture}\shade[ball color=structure.fg!80!white] (0, 0) circle (0.07);\draw  (0, 0) node [draw=structure.fg!50!black!90!bg, inner sep=1pt] {\tiny\color{white}\bf\insertenumlabel};\end{tikzpicture}}}
+\setbeamertemplate{enumerate item}{\raisebox{-0.4ex}{\begin{tikzpicture}\node [draw=fg!50!black!90!bg, inner sep=1pt, shading=ball, circle, ball color=fg!80!white] {\tiny\color{bg}\bf\insertenumlabel};\end{tikzpicture}}}
+\setbeamertemplate{enumerate subitem}{\raisebox{-0.4ex}{\begin{tikzpicture}\node [draw=fg!50!black!90!bg, inner sep=1pt, shading=ball,circle, ball color=fg!80!white] {\tiny\color{bg}\bf\insertenumlabel};\end{tikzpicture}}}
+
+\normalsize
+\pgfdeclareradialshading[bg,parent.bg]{tocsphere}{\pgfpoint{-0.5ex}{0.6ex}}%
+{%
+  color(0cm)=(structure.fg!35!white);
+  color(0.44ex)=(structure.fg!75!white);
+  color(0.88ex)=(structure.fg!70!black!90!bg);
+  color(1.2ex)=(structure.fg!50!black!90!bg);
+  color(1.3ex)=(structure.fg!50!black!90!bg)}
+
+\pgfdeclareradialshading[structure.fg,bg]{bigsphere}{\pgfpoint{-0.1849315ex}{.2260273ex}}%
+{%
+  color(0cm)=(structure.fg!15);
+  color(0.1643835ex)=(structure.fg!75);
+  color(0.3287671ex)=(structure.fg!70!black);
+  color(0.4520547ex)=(structure.fg!50!black);
+  color(0.53ex)=(structure.fg!50!black)}
+
+\pgfdeclareradialshading[structure.fg,bg]{smallsphere}{\pgfpoint{-0.1479452ex}{0.18287671ex}}%
+{%
+  color(0cm)=(structure.fg!15); 
+  color(0.1315068ex)=(structure.fg!75);
+  color(0.2630136ex)=(structure.fg!70!black);
+  color(0.36164383ex)=(structure.fg!50!black);
+  color(0.427ex)=(bg)}
+
+
+\setbeamertemplate{section in toc}
+{\leavevmode%
+  \raisebox{-0.5ex}{\begin{tikzpicture}\node [draw=fg!50!black!90!bg, inner sep=1.5pt, shading=ball, circle, ball color=fg!80!white] {\scriptsize\color{bg}\bf\inserttocsectionnumber};\end{tikzpicture}}
+  \inserttocsection\par
+}
+
+\mode<handout>
+\setbeamertemplate{frametitle}{
+  \setbeamercolor{frametitle}{fg=progressbar@fgblue,bg=white}
+  \usebeamercolor{frametitle}
+  {\color{fg}\bf \insertframetitle}
+}
+
+\mode
+<all>
+
+%%% Local Variables: 
+%%% TeX-master: "~/texmf/tex/latex/beamer/test/test.tex"
+%%% End: 

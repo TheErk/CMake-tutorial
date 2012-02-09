@@ -1,0 +1,310 @@
+\ProvidesPackage{beamerouterthemeprogressbar}[2007/06/21]
+
+
+% Beamer theme by Sylvain Bouveret <sylvain[dot]bouveret[aT]cert[DoT]fr>
+% jun. 2010 version 0.41
+%
+% based on the LaTeX-Beamer package :
+% Copyright 2003 by Till Tantau <tantau@users.sourceforge.net>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+\RequirePackage{tikz}
+\usetikzlibrary{arrows}
+
+\makeatletter
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Processing options...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\progressbar@headline{none}%
+\def\progressbar@frametitle{picture-section}%
+\def\progressbar@imagename{images/tree04}%
+\def\progressbar@titlepage{picture}%
+\define@key{progressbar}{headline}[none]{%
+  \def\progressbar@headline{#1}%
+}
+\define@key{progressbar}{frametitle}[picture]{%
+  \def\progressbar@frametitle{#1}%
+}
+\define@key{progressbar}{imagename}{%
+  \def\progressbar@imagename{#1}%
+  \pgfdeclareimage[width=0.12\textwidth,interpolate=true]{headlineimage}{\progressbar@imagename}
+}
+\define@key{progressbar}{titlepage}[picture]{%
+  \def\progressbar@titlepage{#1}%
+}
+
+\def\progressbaroptions#1{\setkeys{progressbar}{#1}}
+
+\def\insertintermediateframenumber{\inserttotalframenumber}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Some color definitions...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamercolor{progressbar primary}{parent=palette primary}
+\setbeamercolor{progressbar secondary}{parent=palette secondary}
+\setbeamercolor{progressbar tertiary}{parent=palette tertiary}
+\setbeamercolor{progressbar quaternary}{parent=palette quaternary}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Some computations dedicated to the progressbar...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newdimen\progressbar@currentbarlength
+\newdimen\progressbar@framenumberrectangle
+\newdimen\progressbar@titlerectangle
+\newdimen\progressbar@leftbar
+
+\newdimen\progressbar@stepbar
+
+\newcount\progressbar@tmpresult
+\newcount\progressbar@numer
+\newcount\progressbar@denom
+\newcount\progressbar@barlength
+
+\progressbar@framenumberrectangle=\paperwidth
+\progressbar@titlerectangle=\paperwidth
+
+\advance\progressbar@framenumberrectangle by -0.9cm
+\advance\progressbar@titlerectangle by -1.1cm
+
+\progressbar@barlength=115 % (in millimeters)
+\progressbar@leftbar=\progressbar@titlerectangle
+\advance\progressbar@leftbar by -\progressbar@barlength mm
+
+\def\insertprogressbar{
+  \ifnum\insertintermediateframenumber=1\else
+    \progressbar@numer=\insertframenumber
+    \advance\progressbar@numer by -1
+    \progressbar@denom=\insertintermediateframenumber
+    \advance\progressbar@denom by -1
+    \progressbar@tmpresult=\progressbar@barlength
+    \multiply\progressbar@tmpresult by \progressbar@numer
+    \divide\progressbar@tmpresult by \progressbar@denom
+    \progressbar@currentbarlength=\progressbar@tmpresult mm
+
+    \progressbar@numer=1
+    \progressbar@denom=\insertintermediateframenumber
+    \advance\progressbar@denom by -1
+    \progressbar@tmpresult=\progressbar@barlength
+    \multiply\progressbar@tmpresult by \progressbar@numer
+    \divide\progressbar@tmpresult by \progressbar@denom
+    \progressbar@stepbar=\progressbar@tmpresult mm
+
+    \begin{tikzpicture}[thin]
+      \usebeamercolor{section in head/foot}
+      \useasboundingbox (0, 0) rectangle  (\paperwidth, 0.6cm);
+      \draw (\progressbar@framenumberrectangle, 0.21cm) node [anchor=mid west] {\color{fg}\insertframenumber~/~\insertintermediateframenumber};
+      \draw (\progressbar@titlerectangle, 0.21cm) node [anchor=south east] {\color{fg}\insertshorttitle};
+      \draw[fg!30!bg, <->, >=serif cm] (\progressbar@leftbar, 0.21cm) -- (\progressbar@titlerectangle, 0.21cm);
+      \draw (\progressbar@currentbarlength, 0.21cm)
+      ++(\progressbar@leftbar, 0cm) node[anchor=north] {\color{fg!30!bg}$\blacktriangle$};
+    \end{tikzpicture}
+    \fi
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Definition of the customized templates...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mode<presentation>
+
+\newlength\progressbar@sectionboxwidth
+\newlength\progressbar@sectionboxheight
+\newbox\progressbar@sectionbox
+\newbox\progressbar@sectionboxbox
+
+\usesectionheadtemplate
+  {\hfill
+    \setbox\progressbar@sectionbox=\hbox{\insertsectionhead}%
+    \progressbar@sectionboxwidth=\wd\progressbar@sectionbox
+    \advance\progressbar@sectionboxwidth by 4pt
+    \setbox\progressbar@sectionbox=\hbox{\pgfinterruptpicture t \endpgfinterruptpicture}%
+    \progressbar@sectionboxheight=\ht\progressbar@sectionbox
+    \advance\progressbar@sectionboxheight by 4pt
+    \begin{tikzpicture}
+      \usebeamercolor{section in head/foot}
+      \useasboundingbox (-0.5\progressbar@sectionboxwidth, 0pt) rectangle (0.5\progressbar@sectionboxwidth, \progressbar@sectionboxheight);
+      \draw[anchor=base] (0pt, 2pt) node {\color{fg} \insertsectionhead};
+      \draw[rounded corners=3pt, draw=fg] (-0.5\progressbar@sectionboxwidth, 0pt) rectangle (0.5\progressbar@sectionboxwidth, \progressbar@sectionboxheight);
+    \end{tikzpicture}
+  }
+  {\hfill
+    \setbox\progressbar@sectionbox=\hbox{\pgfinterruptpicture\insertsectionhead\endpgfinterruptpicture}%
+    \progressbar@sectionboxwidth=\wd\progressbar@sectionbox
+    \advance\progressbar@sectionboxwidth by 4pt
+    \setbox\progressbar@sectionboxbox=\hbox{\pgfinterruptpicture t \endpgfinterruptpicture}%
+    \progressbar@sectionboxheight=\ht\progressbar@sectionboxbox
+    \advance\progressbar@sectionboxheight by 4pt
+    \begin{tikzpicture}
+      \usebeamercolor{section in head/foot}
+      \useasboundingbox (-0.5\progressbar@sectionboxwidth, 0pt) rectangle (0.5\progressbar@sectionboxwidth, \progressbar@sectionboxheight);
+      \draw[anchor=base] (0pt, 2pt) node {\color{fg} \insertsectionhead};
+    \end{tikzpicture}
+  }
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Headline...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+  \setbeamertemplate{headline}
+  {%
+  \edef\tempa{sections}
+  \ifx\progressbar@headline\tempa
+  \leavevmode%
+  \begin{beamercolorbox}[ignorestructure.bg=true,wd=\paperwidth,ht=4ex,dp=1.125ex]{structure.fg}%
+    \insertsectionnavigationhorizontal{\paperwidth}{}{}%\hskip0pt plus1filll}{}%
+  \end{beamercolorbox}%
+  \else
+  \leavevmode%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=4ex,dp=1.125ex]{structure.fg}%
+  \end{beamercolorbox}%
+  \fi
+  }
+  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Footline...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\defbeamertemplate*{footline}{progressbar theme}{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.6cm,dp=0ex]{structure.fg}%
+    \insertprogressbar
+  \end{beamercolorbox}%
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Title page...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\defbeamertemplate*{title page}{progressbar theme}{
+  \edef\tempa{picture}
+  \ifx\progressbar@titlepage\tempa
+  \vfill
+  \parbox{0.28\textwidth}{
+    \pgfimage[width=0.27\textwidth]{\progressbar@imagename}
+  }\hfill
+  \parbox{0.7\textwidth}{
+    \begin{center}
+      {\usebeamerfont{title}\usebeamercolor{title}{\color{fg}\inserttitle}}
+      \ifx\insertsubtitle\@empty\\[\baselineskip]
+      \else{\\\usebeamerfont{subtitle}\usebeamercolor{subtitle}{\color{fg}\insertsubtitle}}\\[\baselineskip]\fi
+      \hrule\vskip\baselineskip
+      \ifx\insertauthor\@empty\ \\
+      \else{\usebeamerfont{author}\usebeamercolor{author}{\color{fg}\insertauthor}}\\\fi
+      \ifx\insertdate\@empty\ \\
+      \else{\usebeamerfont{date}\usebeamercolor{date}{\color{fg}\insertdate}}\\\fi
+      \ifx\insertinstitute\@empty 
+      \else{\usebeamerfont{institute}\usebeamercolor{institute}{\color{fg}\insertinstitute}}\\\fi
+      \insertlogo
+    \end{center}
+  }\vfill
+  \else
+  \pgfdeclarehorizontalshading{separationtitlepagelineshading}{0.5pt}{color(0cm)=(bg); 
+    color(0.5\textwidth)=(structure.fg); color(\textwidth)=(bg)}
+  \begin{center}
+    \vfill
+    {\usebeamerfont{title}\usebeamercolor{title}{\color{fg}\inserttitle}}
+
+    \ifx\insertsubtitle\@empty 
+    \else{\usebeamerfont{subtitle}\usebeamercolor{subtitle}{\color{fg}\insertsubtitle}}\\[\baselineskip]\fi
+
+    \pgfuseshading{separationtitlepagelineshading}
+    \ifx\insertauthor\@empty\ \\
+    \else{\usebeamerfont{author}\usebeamercolor{author}{\color{fg}\insertauthor}}\\\fi
+    \ifx\insertdate\@empty\ \\
+    \else{\usebeamerfont{date}\usebeamercolor{date}{\color{fg}\insertdate}}\\\fi
+    \ifx\insertinstitute\@empty 
+    \else{\usebeamerfont{institute}\usebeamercolor{institute}{\color{fg}\insertinstitute}}\\\fi
+    \insertlogo
+    \pgfuseshading{separationtitlepagelineshading}
+    \vfill
+  \end{center}
+  \fi
+}
+
+\setbeamertemplate{title page}[progressbar theme]
+
+% \defbeamertemplate*{title page}{progressbar theme}{
+%   \pgfdeclarehorizontalshading{separationtitlepagelineshading}{0.5pt}{color(0cm)=(bg); color(0.5\textwidth)=(structure.fg); color(\textwidth)=(bg)}
+  
+%   \makeatletter
+%   \begin{center}
+%     \textbf{\textcolor{structure.fg}\large\inserttitle}
+    
+%     \pgfuseshading{separationtitlepagelineshading}
+%     \vskip\baselineskip
+%     \footnotesize\insertauthor\\[\baselineskip]
+%     \ifx\insertinstitute\@empty \else\tiny\insertinstitute\\[\baselineskip]\fi
+%     \insertlogo
+%     \vskip\baselineskip
+%     \pgfuseshading{separationtitlepagelineshading}
+%     \vfill
+%     \footnotesize    
+%     \insertdate
+%   \end{center}
+%   \makeatother
+% }
+%\setbeamertemplate{title page}[mytitlepage]
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Background...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\defbeamertemplate*{background canvas}{progressbar theme}{\pgfuseshading{background shading}}%
+
+\AtBeginDocument{%
+  {
+    \usebeamercolor{section in head/foot}
+    \usebeamercolor{normal text}
+    \pgfdeclareverticalshading{background shading}{\the\paperwidth}{color(0cm)=(section in head/foot.bg); color(3cm)=(bg); color(0.6\paperheight)=(bg); color(0.9\paperheight)=(section in head/foot.bg); color(\paperheight)=(black!60!section in head/foot.bg)
+    }
+  }
+}
+
+\mode<handout>
+\setbeamertemplate{background canvas}{}%
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.6cm,dp=0ex]{structure.fg}%
+    \quad \insertshorttitle \hfill \insertframenumber~/~\insertintermediateframenumber\quad \ \vskip0.1cm
+  \end{beamercolorbox}%
+}
+
+\mode
+<all>
+
+\makeatother

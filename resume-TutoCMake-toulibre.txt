@@ -1,0 +1,30 @@
+
+
+Tutoriel CMake (et ses amis CPack, CTest et CDash).
+Eric Noulard, le mercredi 8 février 2012
+Centre Culturel Bellegarde, Toulouse, France
+---------------------------------------------------
+
+Les systèmes de constructions de programmes (a.k.a. build system/tool)
+sont souvent nécessaires à l'élaboration de nos logiciels libres
+favoris. CMake (http://www.cmake.org) est un exemple de genre de système
+notamment utilisé depuis 2006 par le projet KDE.
+
+La présentation sera un tutoriel relativement détaillé de l'utilisation
+de CMake (http://www.cmake.org) et ses amis permettant de construire un logiciel de façon
+portable (Linux, Windows ou MacOS). Nous verrons dans un premier
+les éléments de bases permettant de construire un exécutable ou
+des bibliothèques partagées autonomes. Nous verrons ensuite comment
+découvrir et utiliser les bibliothèques ou exécutables dont on dépend.
+Nous examinerons également comment mettre en oeuvre du test systématique
+avec CTest et CDash, ainsi que le packaging avec CPack.
+
+CMake est lui-même un logiciel (license style BSD) qui a un développement
+communautaire assez actif dont nous évoquerons le mode de fonctionnement.
+
+La présentation durera environ 3h et sera progressive, la première
+heure devrait être accessible à tous.
+Les personnes ayant des questions particulières et/ou un projet de
+"portage" de leur logiciel libre vers un build system basé sur CMake
+peuvent envoyer leurs questions par mail à Eric Noulard
+ avant la présentation.

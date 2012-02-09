@@ -1,0 +1,594 @@
+DocumentTitle = "CMake Tutorial"
+AvailableTransitions = [None]
+#Fullscreen = True
+PageProps = {
+  1:	{
+	  'transition': None,
+	},
+  2:	{
+	  'transition': WipeLeft,
+	},
+  3:	{
+	  'title': "Outlines: Introduction",
+	  'transition': None,
+	},
+  4:	{
+	  'transition': None,
+	},
+  5:	{
+	  'transition': None,
+	},
+  6:	{
+	  'transition': None,
+	},
+  7:	{
+	  'overview': False,
+           'transition': WipeCenterIn,
+	},
+  8:	{
+	  'overview': False,
+	},
+  9:	{
+	  'overview': False,
+	},
+  10:	{
+	  'title': "Outlines: Introduction to build systems",
+	  'transition': None,
+	},
+  11:	{
+	  'overview': False,
+	},
+  12:	{
+	  'transition': None,
+	},
+  13:	{
+	  'transition': None,
+	},
+  14:	{
+	  'transition': None,
+	},
+  15:	{
+	  'transition': None,
+	},
+  16:	{
+	  'transition': None,
+	},
+  17:	{
+	  'title': "Basic CMake usage",
+	  'transition': None,
+	},
+  18:	{
+	  'transition': None,
+	},
+  19:	{
+	  'overview': False,
+	},
+  20:	{
+	  'overview': False,
+	},
+  21:	{
+	  'overview': False,
+	},
+  22:	{
+	  'overview': False,
+	},
+  23:	{
+	  'overview': False,
+	},
+  24:	{
+	  'transition': None,
+	},
+  25:	{
+	  'overview': False,
+	},
+  26:	{
+	  'overview': False,
+	},
+  27:	{
+	  'overview': False,
+	},
+  28:	{
+	  'overview': False,
+	},
+  29:	{
+	  'overview': False,
+	},
+  30:	{
+	  'transition': None,
+	},
+  31:	{
+	  'transition': None,
+	},
+  32:	{
+	  'transition': None,
+	},
+  33:	{
+	  'transition': None,
+	},
+  34:	{
+	  'overview': False,
+	},
+  35:	{
+	  'overview': False,
+	},
+  36:	{
+	  'overview': False,
+	},
+  37:	{
+	  'transition': None,
+	},
+  38:	{
+	  'overview': False,
+	},
+  39:	{
+	  'transition': None,
+	},
+  40:	{
+	  'transition': None,
+	},
+  41:	{
+	  'transition': None,
+	},
+  42:	{
+	  'transition': None,
+	},
+  42:	{
+	  'overview': False,
+	},
+  43:	{
+	  'transition': None,
+	},
+  42:	{
+	  'overview': False,
+	},
+  43:	{
+	  'overview': False,
+	},
+  44:	{
+	  'transition': None,
+	},
+  45:	{
+	  'transition': None,
+	},
+  46:	{
+	  'transition': None,
+	},
+  46:	{
+	  'overview': False,
+	},
+  47:	{
+	  'transition': None,
+	},
+  46:	{
+	  'overview': False,
+	},
+  47:	{
+	  'overview': False,
+	},
+  48:	{
+	  'transition': None,
+	},
+  49:	{
+	  'transition': None,
+	},
+  50:	{
+	  'transition': None,
+	},
+  51:	{
+	  'transition': None,
+	},
+  52:	{
+	  'overview': False,
+	},
+  53:	{
+	  'overview': False,
+	},
+  54:	{
+	  'overview': False,
+	},
+  55:	{
+	  'transition': None,
+	},
+  56:	{
+	  'transition': None,
+	},
+  57:	{
+	  'transition': None,
+	},
+  58:	{
+	  'transition': None,
+	},
+  59:	{
+	  'transition': None,
+	},
+  60:	{
+	  'transition': None,
+	},
+  61:	{
+	  'transition': None,
+	},
+  61:	{
+	  'overview': False,
+	},
+  62:	{
+	  'transition': None,
+	},
+  63:	{
+	  'transition': None,
+	},
+  64:	{
+	  'transition': None,
+	},
+  65:	{
+	  'transition': None,
+	},
+  66:	{
+	  'transition': None,
+	},
+  67:	{
+	  'title': "Discovering environment specificities",
+	  'transition': None,
+	},
+  68:	{
+	  'title': "Discovering environment specificities: Handling platform specificities",
+	  'transition': None,
+	},
+  69:	{
+	  'transition': None,
+	},
+  70:	{
+	  'transition': None,
+	},
+  71:	{
+	  'transition': None,
+	},
+  72:	{
+	  'transition': None,
+	},
+  73:	{
+	  'transition': None,
+	},
+  73:	{
+	  'overview': False,
+	},
+  74:	{
+	  'transition': None,
+	},
+  73:	{
+	  'overview': False,
+	},
+  74:	{
+	  'overview': False,
+	},
+  75:	{
+	  'transition': None,
+	},
+  73:	{
+	  'overview': False,
+	},
+  74:	{
+	  'overview': False,
+	},
+  75:	{
+	  'overview': False,
+	},
+  76:	{
+	  'transition': None,
+	},
+  77:	{
+	  'title': "Discovering environment specificities: Working with external packages",
+	  'transition': None,
+	},
+  78:	{
+	  'transition': None,
+	},
+  78:	{
+	  'overview': False,
+	},
+  79:	{
+	  'transition': None,
+	},
+  78:	{
+	  'overview': False,
+	},
+  79:	{
+	  'overview': False,
+	},
+  80:	{
+	  'transition': None,
+	},
+  81:	{
+	  'transition': None,
+	},
+  81:	{
+	  'overview': False,
+	},
+  82:	{
+	  'transition': None,
+	},
+  81:	{
+	  'overview': False,
+	},
+  82:	{
+	  'overview': False,
+	},
+  83:	{
+	  'transition': None,
+	},
+  84:	{
+	  'transition': None,
+	},
+  84:	{
+	  'overview': False,
+	},
+  85:	{
+	  'transition': None,
+	},
+  86:	{
+	  'title': "More CMake scripting",
+	  'transition': None,
+	},
+  87:	{
+	  'overview': False,
+	},
+  88:	{
+	  'overview': False,
+	},
+  89:	{
+	  'transition': None,
+	},
+  90:	{
+	  'transition': None,
+	},
+  91:	{
+	  'transition': None,
+	},
+  92:	{
+	  'transition': None,
+	},
+  93:	{
+	  'transition': None,
+	},
+  93:	{
+	  'overview': False,
+	},
+  94:	{
+	  'transition': None,
+	},
+  93:	{
+	  'overview': False,
+	},
+  94:	{
+	  'overview': False,
+	},
+  95:	{
+	  'transition': None,
+	},
+  93:	{
+	  'overview': False,
+	},
+  94:	{
+	  'overview': False,
+	},
+  95:	{
+	  'overview': False,
+	},
+  96:	{
+	  'transition': None,
+	},
+  97:	{
+	  'transition': None,
+	},
+  98:	{
+	  'title': "More CMake scripting: Custom commands",
+	  'transition': None,
+	},
+  99:	{
+	  'transition': None,
+	},
+  100:	{
+	  'transition': None,
+	},
+  100:	{
+	  'overview': False,
+	},
+  101:	{
+	  'transition': None,
+	},
+  102:	{
+	  'transition': None,
+	},
+  103:	{
+	  'title': "More CMake scripting: Generated files",
+	  'transition': None,
+	},
+  104:	{
+	  'transition': None,
+	},
+  105:	{
+	  'transition': None,
+	},
+  106:	{
+	  'transition': None,
+	},
+  106:	{
+	  'overview': False,
+	},
+  107:	{
+	  'transition': None,
+	},
+  108:	{
+	  'title': "Advanced CMake usage",
+	  'transition': None,
+	},
+  109:	{
+	  'title': "Advanced CMake usage: Cross-compiling with CMake",
+	  'transition': None,
+	},
+  110:	{
+	  'transition': None,
+	},
+  111:	{
+	  'transition': None,
+	},
+  112:	{
+	  'title': "Advanced CMake usage: Export your project",
+	  'transition': None,
+	},
+  113:	{
+	  'transition': None,
+	},
+  114:	{
+	  'title': "CPack: Packaging made easy",
+	  'transition': None,
+	},
+  115:	{
+	  'transition': None,
+	},
+  116:	{
+	  'title': "CPack with CMake",
+	  'transition': None,
+	},
+  117:	{
+	  'transition': None,
+	},
+  118:	{
+	  'transition': None,
+	},
+  119:	{
+	  'transition': None,
+	},
+  120:	{
+	  'transition': None,
+	},
+  120:	{
+	  'overview': False,
+	},
+  121:	{
+	  'transition': None,
+	},
+  120:	{
+	  'overview': False,
+	},
+  121:	{
+	  'overview': False,
+	},
+  122:	{
+	  'transition': None,
+	},
+  123:	{
+	  'transition': None,
+	},
+  123:	{
+	  'overview': False,
+	},
+  124:	{
+	  'transition': None,
+	},
+  123:	{
+	  'overview': False,
+	},
+  124:	{
+	  'overview': False,
+	},
+  125:	{
+	  'transition': None,
+	},
+  123:	{
+	  'overview': False,
+	},
+  124:	{
+	  'overview': False,
+	},
+  125:	{
+	  'overview': False,
+	},
+  126:	{
+	  'transition': None,
+	},
+  123:	{
+	  'overview': False,
+	},
+  124:	{
+	  'overview': False,
+	},
+  125:	{
+	  'overview': False,
+	},
+  126:	{
+	  'overview': False,
+	},
+  127:	{
+	  'transition': None,
+	},
+  128:	{
+	  'overview': False,
+	},
+  129:	{
+	  'overview': False,
+	},
+  130:	{
+	  'overview': False,
+	},
+  131:	{
+	  'overview': False,
+	},
+  132:	{
+	  'overview': False,
+	},
+  133:	{
+	  'overview': False,
+	},
+  134:	{
+	  'overview': False,
+	},
+  135:	{
+	  'transition': None,
+	},
+  136:	{
+	  'transition': None,
+	},
+  137:	{
+	  'title': "Various package generators",
+	  'transition': None,
+	},
+  138:	{
+	  'transition': None,
+	},
+  139:	{
+	  'transition': None,
+	},
+  140:	{
+	  'transition': None,
+	},
+  141:	{
+	  'transition': None,
+	},
+  142:	{
+	  'transition': None,
+	},
+  142:	{
+	  'overview': False,
+	},
+  143:	{
+	  'transition': None,
+	},
+  144:	{
+	  'title': "Systematic Testing",
+	  'transition': None,
+	},
+  145:	{
+	  'title': "CTest submission to CDash",
+	  'transition': None,
+	},
+  146:	{
+	  'transition': None,
+	},
+  147:	{
+	  'title': "References",
+	  'transition': None,
+	},
+  148:	{
+	  'transition': None,
+	},
+}

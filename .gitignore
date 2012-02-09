@@ -1,0 +1,11 @@
+*.log
+*.aux
+*~
+*.bbl
+*.blg
+CMake-tutorial.nav
+CMake-tutorial.out
+CMake-tutorial.snm
+CMake-tutorial.toc
+CMake-tutorial.vrb
+

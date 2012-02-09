@@ -1,0 +1,66 @@
+\ProvidesPackage{beamercolorthemeprogressbar}[2007/06/21]
+
+% Beamer theme by Sylvain Bouveret <sylvain[dot]bouveret[aT]cert[DoT]fr>
+% jun. 2010 version 0.41
+%
+% based on the LaTeX-Beamer package :
+% Copyright 2003 by Till Tantau <tantau@users.sourceforge.net>
+%
+% This program can be redistributed and/or modified under the terms
+% of the GNU Public License, version 2.
+
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Some color definitions...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\definecolor{progressbar@bgyellow}{rgb}{0.95,0.95,0.85}
+\definecolor{progressbar@bggray}{rgb}{0.9,0.9,0.9}
+
+\definecolor{progressbar@fgblue}{rgb}{0.2, 0.3, 0.5}
+\definecolor{progressbar@bgblue}{rgb}{0.92, 0.93, 0.95}
+
+\definecolor{progressbar@darkbgblue}{rgb}{0.01,0.05,0.15}
+\definecolor{progressbar@darkfgblue}{rgb}{0.25,0.45,0.5}
+
+\mode<presentation>
+
+\setbeamercolor{palette primary}{fg=progressbar@fgblue,bg=progressbar@bgblue}
+\setbeamercolor{palette secundary}{fg=white!90!progressbar@fgblue,bg=progressbar@fgblue}
+\setbeamercolor{palette tertiary}{fg=progressbar@fgblue,bg=progressbar@bgblue}
+\setbeamercolor{palette quaternary}{fg=progressbar@fgblue,bg=progressbar@bgblue}
+
+\setbeamercolor{structure}{fg=progressbar@fgblue,bg=white}
+
+\setbeamercolor{background canvas}{parent=palette primary}
+
+\setbeamercolor{section in head/foot}{parent=palette secundary}
+\setbeamercolor{frametitle}{bg=progressbar@fgblue,fg=progressbar@bgblue!90!progressbar@fgblue}
+
+
+\setbeamercolor{alerted text}{fg=black!40!red,bg=bg}
+\setbeamercolor{example text}{fg=black!40!green,bg=bg}
+
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=progressbar@bggray}
+\setbeamercolor{block title alerted}{fg=alerted text.fg,bg=alerted text.fg!10!bg}
+\setbeamercolor{block title example}{fg=example text.fg,bg=example text.fg!10!bg}
+
+\setbeamercolor{block body}{fg=black,bg=progressbar@bggray}
+\setbeamercolor{block body alerted}{fg=normal text.fg,bg=alerted text.fg!10!bg}
+\setbeamercolor{block body example}{fg=normal text.fg,bg=example text.fg!10!bg}
+
+\setbeamercolor{title}{fg=progressbar@fgblue,bg=white}
+\setbeamercolor{subtitle}{parent=title}
+
+
+\mode
+<all>
+
+
+
+\makeatother
