@@ -162,8 +162,8 @@ This presentation is licensed
 \item \textcolor{cmakeblue}{Kitware for making a really nice set of tools and making them open-source}
 \item \textcolor{cmakered}{the CMake mailing list for its friendliness and its more than valuable source of information}
 \item \textcolor{cmakegreen}{CMake developers for their tolerance when I break the dashboard or mess-up
-      with the git workflow,}
-\item \textcolor{cmakeblue}{CPack users for their patience when things don't work as they \sout{should}expect}
+      with the Git workflow,}
+\item \textcolor{cmakeblue}{CPack users for their patience when things don't work as they \sout{should} expect}
 \item \textcolor{cmakeblue}{Alan},
       \textcolor{cmakered}{Alex},
       \textcolor{cmakegreen}{Bill},
@@ -193,7 +193,7 @@ to build software in a unified manner on a broad set of platforms:
 \includegraphics[width=0.7cm]{TuxLogo_48}
 \includegraphics[width=0.7cm]{FreeBSDLogo_48},
 Windows, 
-MacOS, AIX, IRIX,
+Mac OS, AIX, IRIX,
 \includegraphics[width=0.7cm]{AndroidLogo},
 iOS
 $\cdots$
@@ -231,13 +231,13 @@ A software build system is the usage of a [set of] tool[s] for building software
 \begin{block}{Why do we need that?}
 \begin{itemize}
 \pause
-\item because most softwares consist in several parts that need
+\item because most softwares consist of several parts that need
       some \emph{building} to put them together,
 \pause
 \item because softwares are written in \emph{various languages} 
       that may share the same building process,
 \pause
-\item because we want to build \emph{the same software for various computers} {\scriptsize (PC, Macintosh, Workstation, mobile phones and other PDA, embbeded computers) and systems (Windows, Linux, *BSD, other Unices (many), Android, etc\ldots)}
+\item because we want to build \emph{the same software for various computers} {\scriptsize (PC, Macintosh, Workstation, mobile phones and other PDA, embedded computers) and systems (Windows, Linux, *BSD, other Unices (many), Android, etc\ldots)}
 \end{itemize}
 \end{block}
 \end{frame}
@@ -342,10 +342,10 @@ CMake is not the only build system [generator]:
 \item Apache ant \url{http://ant.apache.org/}, dedicated to Java (almost).
 \item Portable IDE: Eclipse, Code::Blocks, Geany, NetBeans, \ldots 
 \item GNU Autotools: Autoconf, Automake, Libtool.
-Produce makefiles. Needs bourne shell (and M4 macro processor).
+Produce makefiles. Bourne shell needed (and M4 macro processor).
 see e.g. \url{http://www.gnu.org/software/autoconf/}
 \item SCons: \url{http://www.scons.org}
-only depends on python. Extensible with python.
+only depends on Python. Extensible with Python.
 \item \ldots
 \end{itemize}
 \end{block}
@@ -389,7 +389,7 @@ source file of the respective language.
 \includegraphics[width=0.9\textwidth,height=0.50\textheight]{CMakeAutoconfAutomake-trend}
 \end{center}
 \begin{block}{\url{http://www.google.com/trends}}
-Scale is based on the average worldwide traffic of cmake in all years.
+Scale is based on the average worldwide traffic of CMake in all years.
 \end{block}
 \end{frame}
 
@@ -398,9 +398,9 @@ Scale is based on the average worldwide traffic of cmake in all years.
 \begin{frame}
 \frametitle{A build system generator}
 \begin{itemize}
-\item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, IDE project files, \ldots),
+\item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, Ninja, IDE project files, \ldots),
 \item CMake scripting language (declarative) is used to describe the build,
-\item The developer edit \fname{CMakeLists.txt}, invoke CMake but 
+\item The developer edits \fname{CMakeLists.txt}, invokes CMake but 
       should \emph{never} edit the generated files,
 \item CMake may be (automatically) re-invoked by the build system,
 \end{itemize}
@@ -420,7 +420,7 @@ Scale is based on the average worldwide traffic of cmake in all years.
 \end{enumerate}
 \onslide<1->{
 \begin{alertblock}{When do things take place?}
-CMake is a \emph{generator} so it does not compile (i.e. build) the sources,
+CMake is a \emph{generator} which means it does not compile (i.e. build) the sources,
 the underlying build tool (make, XCode, Code::Blocks\ldots) does.
 \end{alertblock}
 }
@@ -673,7 +673,7 @@ Out-of-source build is \emph{always} better because:
 \pause
 \item Generated files are separate from manually edited ones
 
-      (thus you don't have to clutter you favorite VCS ignore files).
+      (thus you don't have to clutter your favorite VCS ignore files).
 \pause
 \item You can have several build trees for the same source tree
 \pause
@@ -887,7 +887,7 @@ expected ones:
 \begin{frame}[fragile]
 \frametitle{User controlled build option}
 \begin{alertblock}{User controlled option}
-May be our users don't want the acronym dictionnary support.
+Maybe our users don't want the acronym dictionary support.
 We can use CMake \lstinline!OPTION! command.
 \end{alertblock}
 \begin{lstlisting}[basicstyle=\tiny,caption=User controlled build option]
@@ -917,34 +917,34 @@ endif(WITH_ACRODICT)
 A matter of choice / taste:
 \begin{itemize}
 \item a command line: \fname{cmake}
-\item a curse-based TUI: \fname{ccmake}
-\item a QT-based GUI: \fname{cmake-gui}
+\item a curses-based TUI: \fname{ccmake}
+\item a Qt-based GUI: \fname{cmake-gui}
 \end{itemize}
 \end{block}
-\begin{alertblock}{Call convention}
+\begin{alertblock}{Calling convention}
 All tools expect to be called with a single argument
 which may be interpreted in 2 different ways.
 \vspace*{0.3cm}
 \begin{itemize}
 \item path to the source tree, e.g.: \fname{cmake /path/to/source}
-\item path to an existing build tree, e.g.: \fname{cmake-gui .}
+\item path to an \alert{existing} build tree, e.g.: \fname{cmake-gui .}
 \end{itemize}
 \end{alertblock}
 
 \begin{center}
-\fname{ccmake} : the curse-based TUI (demo)
+\fname{ccmake} : the curses-based TUI (demo)
 
 \includegraphics[width=0.8\textwidth]{ccmake-1}
 
-Here we can choose to toggle the \lstinline!WITH_ACRONYM OPTION!.
+Here we can choose to toggle the \lstinline!WITH_ACRODICT OPTION!.
 \end{center}
 
 \begin{center}
-\fname{cmake-gui} : the QT-based GUI (demo)
+\fname{cmake-gui} : the Qt-based GUI (demo)
 
 \includegraphics[width=0.7\textwidth]{cmake-gui-1}
 
-Again, we can choose to toggle the \lstinline!WITH_ACRONYM OPTION!.
+Again, we can choose to toggle the \lstinline!WITH_ACRODICT OPTION!.
 \end{center}
 \end{frame}
 
@@ -993,7 +993,7 @@ we are running on {Unix}, \textcolor{cmakered}{Apple},
 
 \begin{frame}[fragile]
 \frametitle{Equally simple on other platforms}
-It is as easy for a windows build, however
+It is as easy for a Windows build, however
 names for executables and libraries are computed
 in a
 \textcolor{cmakeblue}{platform}
@@ -1027,7 +1027,7 @@ in a
 \begin{frame}[fragile]
 \frametitle{Installing things}
 \begin{block}{Install}
-Several parts or the software may need to be installed,
+Several parts or the software may need to be installed:
 this is controlled by the CMake \lstinline!install! command.
 
 \alert{Remember \fname{cmake --help-command install}!!}
@@ -1053,7 +1053,7 @@ endif(WITH_ACRODICT)
 One should always use relative installation \lstinline!DESTINATION!
 unless you really want to use absolute path like \fname{/etc}.
 \end{alertblock}
-Then depending when you install:
+Then depending on when you install:
 \begin{itemize}
 \pause
 \item At \textcolor{cmaketimec}{CMake-time} set \lstinline!CMAKE_INSTALL_PREFIX! value
@@ -1092,7 +1092,7 @@ $ cmake --help-command set
 %$
 \end{block}
 \begin{block}{On the command line/TUI/GUI}
-Remember that (beside options) each CMake tool takes a single argument
+Remember that (besides options) each CMake tool takes a single argument
 (source tree or \alert{existing} build tree)
 \begin{Verbatim}[fontsize=\scriptsize]
 $ cmake -DCMAKE_INSTALL_PREFIX=/home/eric/testinstall .
@@ -1106,7 +1106,7 @@ $ cmake -DCMAKE_INSTALL_PREFIX=/home/eric/testinstall .
 \begin{block}{Install target}
 The \fname{install} target of the underlying build tool (in our case \fname{make})
 appears in the generated build system as soon as some \lstinline!install! 
-command are used in the \fname{CMakeLists.txt}.
+commands are used in the \fname{CMakeLists.txt}.
 \end{block}
 \begin{Verbatim}[commandchars=\\\{\},fontsize=\scriptsize,numbers=left]
 $ make DESTDIR=/tmp/testinstall install
@@ -1174,7 +1174,7 @@ $ tar ztvf TotallyFree-0.1.0-Linux.tar.gz
 \frametitle{CPack the packaging friend}
 \begin{block}{CPack is a standalone generator}
 As we will see later on, CPack is standalone application,
-which as CMake is a \emph{generator}.
+which like CMake is a \emph{generator}.
 \end{block}
 \vspace*{-0.5cm}
 \begin{multicols}{2}
@@ -1381,14 +1381,14 @@ More on this later\ldots
 \begin{frame}[fragile]
 \frametitle{Summary}
 \begin{block}{CMake basics}
-Using CMake basics we can already do a lot a things with minimal writing.
+Using CMake basics we can already do a lot of things with minimal writing.
 \end{block}
 \begin{itemize}
 \item Write simple build specification file: \fname{CMakeLists.txt}
 \item Discover compilers (C, C++, Fortran)
 \item Build executable and library (shared or static) in a cross-platform manner
 \item Package the resulting binaries with CPack
-\item Runs systematic test with CTest and publish them with CDash
+\item Run systematic tests with CTest and publish them with CDash
 \end{itemize}
 \end{frame}
 
@@ -1425,10 +1425,10 @@ the build in a platform specific way.
 \begin{itemize}
 \item system specific
 \begin{itemize}
-\item \lstinline!WIN32! True on windows systems, including win64.
+\item \lstinline!WIN32! True on Windows systems, including Win64.
 \item \lstinline!UNIX! True for UNIX and UNIX like operating systems.
-\item \lstinline!APPLE! True if running on Mac OSX.
-\item \lstinline!CYGWIN! True for cygwin.
+\item \lstinline!APPLE! True if running on Mac OS X.
+\item \lstinline!CYGWIN! True for Cygwin.
 \end{itemize}
 \item compiler specific
 \begin{itemize}
@@ -1498,7 +1498,7 @@ Then on line \ref{source-specific-flags}, if the option is set then we pass a so
 \frametitle{System specific in real life}
 \begin{block}{Real [numeric] life project}
 Real projects (i.e. not the toy of this tutorial) have many parts
-of their \fname{CMakeLists.txt} which deals with system/compiler
+of their \fname{CMakeLists.txt} which deal with system/compiler
 specific option/feature.
 \end{block}
 \begin{itemize}
@@ -1512,18 +1512,18 @@ specific option/feature.
       {\tiny \url{http://cvs.savannah.gnu.org/viewvc/certi/?root=certi}}
 \item CMake (of course): \url{http://www.cmake.org}
 \item LLVM: \url{http://llvm.org/docs/CMake.html}
-\item a lot more \ldots
+\item many more \ldots
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile,allowframebreaks]
 \frametitle{What about \fname{projectConfig.h} file?}
 \begin{block}{Project config files}
-Sometimes it's easier to test for feature and then write a
+Sometimes it's easier to test for features and then write a
 configuration file (\fname{config.h}, \fname{project\_config.h}, \ldots).
 The CMake way to do that is to:
 \begin{enumerate}
-\item lookup system informations using CMake variable, functions, macros (built-in or imported)
+\item lookup system information using CMake variable, functions, macros (built-in or imported)
       then set various variables,
 \item use the defined variable in order to write a template configuration
       header file
@@ -1532,7 +1532,7 @@ The CMake way to do that is to:
 \end{enumerate}
 \end{block}
 
-\begin{lstlisting}[basicstyle=\tiny,caption=Excerpt from CERTI project main \fname{CMakeLists.txt}]
+\begin{lstlisting}[basicstyle=\tiny,caption=Excerpt from CERTI project's main \fname{CMakeLists.txt}]
 # Load Checker macros
 INCLUDE(CheckFunctionExists)
 
@@ -1616,7 +1616,7 @@ And you get something like:
 \begin{frame}[fragile,allowframebreaks]
 \frametitle{The \lstinline!find_package! command}
 \begin{block}{Finding external package}
-Project may be using external libraries, program, files etc\ldots
+Project may be using external libraries, programs, files etc\ldots
 Those can be found using the \lstinline!find_package! command.
 \end{block}
 \begin{lstlisting}[basicstyle=\scriptsize,caption=using libxml2]
@@ -1632,14 +1632,14 @@ target_link_libraries(MyTarget ${LIBXML2_LIBRARIES})
 \end{lstlisting}
 %$
 \begin{itemize}
-\item Find modules usually defines standard variables (for module XXX)
+\item Find modules usually define standard variables (for module XXX)
      \begin{enumerate}
      \item \fname{XXX\_FOUND}: Set to false, or undefined, if we haven't found, or don't want to use \fname{XXX}.
      \item \fname{XXX\_INCLUDE\_DIRS}: The final set of include directories listed in one variable for use by client code.
      \item \fname{XXX\_LIBRARIES}: The libraries to link against to use \fname{XXX}.
            These should include full paths.
      \item \fname{XXX\_DEFINITIONS}: Definitions to use when compiling code that uses \fname{XXX}.
-     \item \fname{XXX\_EXECUTABLE}: Where to find the \fname{XXX} tool.
+     \item \fname{XXX\_EXECUTABLE}: File location of the \fname{XXX} tool's binary.
      \item \fname{XXX\_LIBRARY\_DIRS}: Optionally, the final set of library directories listed in one variable for use by client code.
      \end{enumerate}
 \item See doc \fname{cmake --help-module FindLibXml2}
@@ -1671,7 +1671,7 @@ find modules or anything else inside \fname{CMakeLists.txt}
 \item to find an executable program: \lstinline!find_program!
 \item to find a library: \lstinline!find_library!
 \item to find any kind of file: \lstinline!find_file!
-\item to find a path where a file reside: \lstinline!find_path!
+\item to find a path where a file resides: \lstinline!find_path!
 \end{itemize}
 
 \begin{lstlisting}[basicstyle=\tiny]
@@ -1768,12 +1768,12 @@ $ cmake --help-module ExternalProject
 \begin{itemize}
 \item Normal mode: the mode used when processing \fname{CMakeLists.txt}
 \item Command mode: \fname{cmake -E <command>}, command line mode
-      which offers basic command in a portable way:
+      which offers basic commands in a portable way:
 
       \onslide<2->{\alert{works on all supported CMake platforms}. I.e. you don't want to rely
       on shell or native command interpreter capabilities.}
 \item Process scripting mode: \fname{cmake -P <script>}, used to execute
-      a CMake script which is not a CMakeLists.txt.
+      a CMake script which is not a CMakeLists.txt filename.
 
       \onslide<3->{\alert{Not all CMake commands are scriptable!!}}
 \item Wizard mode: \fname{cmake -i}, interactive equivalent of the Normal mode.
@@ -1867,7 +1867,7 @@ cmake version 2.8.7
 \begin{frame}[fragile,allowframebreaks]
 \frametitle{Portable script for building CMake}
 As an example of what can be done with pure CMake script
-(script mode) here is a script for building CMake package
+(script mode) here is a script for building the CMake package
 using a previously installed CMake.
 \begin{lstlisting}[basicstyle=\tiny,number=left,breaklines=true]
 # Simple cmake script which may be used to build
@@ -1985,7 +1985,7 @@ enabling the building of the \emph{target}).
 A CMake target has \alert{dependencies} and \alert{properties}.
 \end{block}
 \begin{enumerate}
-\item Executable are targets: \lstinline!add_executable!
+\item Executables are targets: \lstinline!add_executable!
 \item Libraries are targets: \lstinline!add_library!
 \item There exist some builtin targets: \fname{install}, \fname{clean}, \fname{package}, \ldots
 \item You may create custom targets: \lstinline!add_custom_target!
@@ -2006,7 +2006,7 @@ or some properties.
 \begin{block}{Properties}
 Properties may be attached to either \emph{target} or \emph{source file}
 (or even \emph{test}).
-They may be used to tailor prefix or suffix to be used for libraries, 
+They may be used to tailor the prefix or suffix to be used for libraries, 
 compile flags, link flags, linker language, shared libraries version,
 \ldots
 \end{block}
@@ -2023,8 +2023,8 @@ are used for the source file itself (which may be involved in several targets).
 \begin{frame}[fragile]
 \frametitle{Custom targets and commands}
 \begin{block}{Custom}
-Custom targets and custom commands are a way to create \emph{target}
-which may be used to execute arbitrary command at \alert{Build-time}.
+Custom targets and custom commands are a way to create a \emph{target}
+which may be used to execute arbitrary commands at \alert{Build-time}.
 \begin{itemize}
 \item for target  : \lstinline!add_custom_target!
 \item for command : \lstinline!add_custom_command!, in order to add some
@@ -2040,13 +2040,13 @@ other files derived from source like embedded documentation (Doxygen), \ldots
 \frametitle{Generated files}
 \begin{block}{List all the sources}
 CMake advocates to specify all the source files explicitly
-(this do not use \lstinline!file(GLOB ...)!)
+(i.e. do not use \lstinline!file(GLOB ...)!)
 This is the only way to keep robust dependencies.
 Moreover you usually already need to do that when using a VCS
-(cvs, subversion, git, hg,\ldots).
+(CVS, Subversion, Git, hg,\ldots).
 \end{block}
-However some files may be generated during the build (using \lstinline!add_custom_xxx!)
-in this case you must tell CMake that they are \lstinline!GENERATED! files
+However some files may be generated during the build (using \lstinline!add_custom_xxx!),
+in which case you must tell CMake that they are \lstinline!GENERATED! files
 using:
 
 \begin{lstlisting}[basicstyle=\scriptsize]
@@ -2121,7 +2121,7 @@ Cross-compiling is when the \emph{host} system,
 is not the same as the \emph{target} system,
 \textsl{the one the compiled program will be running on}.
 \end{block}
-CMake can handle cross-compiling using \emph{Toolchain}
+CMake can handle cross-compiling using a \emph{Toolchain} description file,
 see \url{http://www.cmake.org/Wiki/CMake_Cross_Compiling}.
 \begin{Verbatim}[fontsize=\tiny,numbers=left]
 mkdir build-win32
@@ -2174,8 +2174,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 \frametitle{Exporting/Import your project}
 
 \begin{block}{Export/Import to/from others}
-CMake can help project using CMake as a build system to
-export/import targets to/from other project using CMake
+CMake can help a project using CMake as a build system to
+export/import targets to/from another project using CMake
 as a build system.
 \end{block}
 
@@ -2196,8 +2196,8 @@ No more time for that today sorry, see:
 \begin{frame}
 \frametitle{Introduction}
 \begin{block}{A Package \textbf{generator}}
-In the same way as CMake \emph{generates} build files, CPack
-\emph{generates} packager files.
+In the same way that CMake \emph{generates} build files, CPack
+\emph{generates} package files.
 \end{block}
 
 \begin{multicols}{2}
@@ -2206,7 +2206,7 @@ In the same way as CMake \emph{generates} build files, CPack
 \item DEB, RPM (Linux)
 \item Cygwin Source or Binary (Windows/Cygwin)
 \item NSIS (Windows, Linux)
-\item DragNDrop, Bundle, OSXX11 (MacOS)
+\item DragNDrop, Bundle, OSXX11 (Mac OS)
 \end{itemize}
 \columnbreak
 \includegraphics[width=5cm]{figures/CPack-logo-3D-opened-v2} \\
@@ -2220,7 +2220,7 @@ In the same way as CMake \emph{generates} build files, CPack
 \begin{frame}
 \frametitle{The CPack application}
 \begin{block}{CPack standalone}
-CPack is a standalone application which behavior is
+CPack is a standalone application whose behavior is
 driven by a configuration file e.g. \fname{CPackConfig.cmake}.
 This file is a CMake language script which defines
 \lstinline!CPACK_XXXX! variables:
@@ -2228,7 +2228,7 @@ This file is a CMake language script which defines
 the config parameters of the CPack run.
 \end{block}
 \begin{block}{CPack with CMake}
-When CPack is used to package a project built with CPack
+When CPack is used to package a project built with CPack,
 then the CPack configuration is usually generated by CMake by
 including \fname{CPack.cmake} in the main \fname{CMakeLists.txt}:
 
@@ -2335,7 +2335,7 @@ Whichever way you call it, the CPack steps are:
       \begin{enumerate}
       \item (re)sets \fname{CPACK\_GENERATOR} to the one currently being iterated over
       \item includes the \fname{CPACK\_PROJECT\_CONFIG\_FILE}
-      \item installs the project into CPack private location (using \fname{DESTDIR})
+      \item installs the project into a CPack private location (using \fname{DESTDIR})
       \item calls the generator and produces the package(s) for that generator
       \end{enumerate}
 \end{enumerate}
@@ -2580,7 +2580,7 @@ the project.
 \frametitle{Archive Generators}
 \begin{block}{A family of generators}
 The archive generators is a family of generators which is supported
-on all CMake supported platforms through libarchive:
+on all CMake supported platforms through \fname{libarchive}:
 \url{http://code.google.com/p/libarchive/}.
 \end{block}
 \begin{itemize}
@@ -2600,11 +2600,11 @@ on all CMake supported platforms through libarchive:
 \item Binary DEB: works on any Linux distros.
 \end{itemize}
 \begin{block}{CPack vs native tools}
-One could argue ``why using CPack for building .deb or .rpm''.
+One could argue ``why use CPack for building .deb or .rpm''.
 The primary target of CPack RPM and DEB generators are people who are NOT
-professional packager.
+professional packagers.
 Those people can get a clean package without too much effort and get
-better package than a bare TAR archive.
+a better package than a bare TAR archive.
 \end{block}
 \begin{alertblock}{No official packaging replacement}
 Those generators are \alert{no replacement} for official packaging tools.
@@ -2617,7 +2617,7 @@ Those generators are \alert{no replacement} for official packaging tools.
 \item Zip archive generator
 \item NullSoft System Installer generator (\url{http://nsis.sourceforge.net/}
 
-      Support component installation, produce nice GUI installer.
+      Supports component installation, produces nice GUI installer.
 \item MSI installer requested:
 
       \url{http://public.kitware.com/Bug/view.php?id=11575}.
@@ -2626,7 +2626,7 @@ Those generators are \alert{no replacement} for official packaging tools.
 \end{frame}
 
 \begin{frame}
-\frametitle{MacOS-friendly generators}
+\frametitle{Mac OS-friendly generators}
 \begin{multicols}{2}
 \begin{itemize}
 \item Tar-kind archive generators
@@ -2637,7 +2637,7 @@ Those generators are \alert{no replacement} for official packaging tools.
 \end{itemize}
 \end{multicols}
 \begin{alertblock}{Don't ask me}
-I'm not a MacOS user and I don't know them.
+I'm not a Mac OS user and I don't know them.
 Go and read the Wiki or ask on the ML.
 
 \url{http://www.cmake.org/Wiki/CMake:CPackPackageGenerators}
@@ -2673,7 +2673,7 @@ More detailed documentation here:
 {\scriptsize \url{http://www.cmake.org/Wiki/CMake:Component_Install_With_CPack}}
 \begin{alertblock}{Component aware generator}
 \begin{itemize}
-\item Not all generators do support component
+\item Not all generators do support components
 
       (i.e. they are \fname{MONOLITHIC})
 \item Some produce a single package file containing all components.
