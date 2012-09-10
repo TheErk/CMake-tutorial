@@ -133,12 +133,15 @@
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background2,background,main,foreground}
 
+% If you tailor the presentation to your need
+% you can perfectly put your name on it.
+
 \title{CMake tutorial}
 \subtitle{and its friends CPack, CTest and CDash}
-\author{Eric NOULARD - \url{eric.noulard@gmail.com}\\
+\author{Your NAME - \url{your.name@whatever.com}\\
         \includegraphics[width=5cm]{figures/CMake-logo-small}\\
         \url{http://www.cmake.org}}
-\date{February, $8^{th}$ 2012}
+\date{DRAFT compiled on \today}
 \subject{Slides for CMake, CPack, CTest, CDash presentation. In english.}
 \keywords{CMake, CPack, CTest, CDash, build systems, autotools, SCons}
 
@@ -149,9 +152,12 @@
 This presentation is licensed
 
 \includegraphics[width=1.2cm]{figures/by-sa}
-\vspace*{-0.3cm}
 
 \url{http://creativecommons.org/licenses/by-sa/3.0/us/}
+
+\url{https://github.com/TheErk/CMake-tutorial}
+
+Initially given by Eric Noulard for Toulibre on February, $8^{th}$ 2012.
 }
 \end{center}
 \end{frame}
@@ -172,12 +178,37 @@ This presentation is licensed
       \textcolor{cmakegreen}{David},
       \textcolor{cmakeblue}{Eike},
       \textcolor{cmakered}{Julien},
-      \textcolor{cmakegreen}{Mathieu}, 
-      \textcolor{cmakeblue}{Michael \& Michael}, 
+      \textcolor{cmakegreen}{Mathieu},
+      \textcolor{cmakeblue}{Michael \& Michael},
       \textcolor{cmakeblue}{and}  \textcolor{cmakered}{many} \textcolor{cmakegreen}{more}\ldots
 \item \textcolor{cmakegreen}{My son Louis for the nice CPack 3D logo done with Blender.}
 \item \textcolor{cmakered}{and...Toulibre for hosting this presention in Toulouse, France.}
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{And thanks to contributors as well\ldots}
+
+{%\setbeamerfont{block title}{size=\fontsize{6pt}{9.0}}
+\begin{block}{History}
+\fontsize{6pt}{7.2}\selectfont
+This presentation  was initially made  by Eric Noulard for  a Toulibre
+(\url{http://www.toulibre.fr}) given in Toulouse (France) on February,
+$8^{th}$ 2012.  After that,  the source of  the presentation  has been
+release                         under                        CC-BY-SA,
+\url{http://creativecommons.org/licenses/by-sa/3.0/us/} and put on
+\url{https://github.com/TheErk/CMake-tutorial} then contributors
+stepped-in.
+\end{block}
+{\normalsize
+Many thanks to all contributors (alphabetical order):
+}
+\begin{block}{Contributors}
+\fontsize{6pt}{7.2}\selectfont
+ \textcolor{cmakeblue}{Sébastien Dinot},
+ \textcolor{cmakered}{Andreas Mohr}.
+\end{block}
+}
 \end{frame}
 
 \section*{Outlines}
@@ -400,7 +431,7 @@ Scale is based on the average worldwide traffic of CMake in all years.
 \begin{itemize}
 \item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, Ninja, IDE project files, \ldots),
 \item CMake scripting language (declarative) is used to describe the build,
-\item The developer edits \fname{CMakeLists.txt}, invokes CMake but 
+\item The developer edits \fname{CMakeLists.txt}, invokes CMake but
       should \emph{never} edit the generated files,
 \item CMake may be (automatically) re-invoked by the build system,
 \end{itemize}
@@ -2006,7 +2037,7 @@ or some properties.
 \begin{block}{Properties}
 Properties may be attached to either \emph{target} or \emph{source file}
 (or even \emph{test}).
-They may be used to tailor the prefix or suffix to be used for libraries, 
+They may be used to tailor the prefix or suffix to be used for libraries,
 compile flags, link flags, linker language, shared libraries version,
 \ldots
 \end{block}
