@@ -109,6 +109,7 @@
       \usebeamercolor{section in head/foot}
       \useasboundingbox (0, 0) rectangle  (\paperwidth, 0.6cm);
       \draw (\progressbar@framenumberrectangle, 0.21cm) node [anchor=mid west] {\color{fg}\insertframenumber~/~\insertintermediateframenumber};
+      \draw (\progressbar@leftbar, 0.21cm) node [anchor=south west] {\color{fg}\url{https://github.com/TheErk/CMake-tutorial}};
       \draw (\progressbar@titlerectangle, 0.21cm) node [anchor=south east] {\color{fg}\insertshorttitle};
       \draw[fg!30!bg, <->, >=serif cm] (\progressbar@leftbar, 0.21cm) -- (\progressbar@titlerectangle, 0.21cm);
       \draw (\progressbar@currentbarlength, 0.21cm)
