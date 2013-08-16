@@ -9,7 +9,7 @@
 # configure and compiled tree, using the tarball found on Kitware. 
 
 cmake_minimum_required(VERSION 2.8)
-set(CMAKE_VERSION "2.8.7")
+set(CMAKE_VERSION "2.8.11.2")
 set(CMAKE_FILE_PREFIX "cmake-${CMAKE_VERSION}")
 set(CMAKE_REMOTE_PREFIX "http://www.cmake.org/files/v2.8/")
 set(CMAKE_FILE_SUFFIX ".tar.gz")
