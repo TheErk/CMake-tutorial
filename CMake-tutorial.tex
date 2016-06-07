@@ -77,27 +77,35 @@
 
 \lstset{escapeinside={(*@}{@*)}}
 \lstset{language=CMake,
-	basicstyle=\normalsize,
-        keywordstyle=\bfseries\textcolor{blue},
-        identifierstyle=\sffamily,
-        commentstyle=\itshape\textcolor{olive},
-        stringstyle=\ttfamily,
-        extendedchars=false,
-        showstringspaces=true,
-        numbers=left,
-        numberstyle=\tiny,
-        stepnumber=1,
-        frame=single,
-        tabsize=3
-        }
+  basicstyle=\normalsize,
+  keywordstyle=\bfseries\textcolor{blue},
+  identifierstyle=\sffamily,
+  commentstyle=\itshape\textcolor{olive},
+  stringstyle=\ttfamily,
+  extendedchars=false,
+  showstringspaces=true,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  frame=single,
+  tabsize=3
+}
 
 \hypersetup{
-            colorlinks=true,
-            pdftitle={CMake [and friends] tutorial},
-            pdfauthor={Eric NOULARD},
-            pdfsubject={CMake},
-            pdfkeywords={CMake, CPack, CTest, CDash, build systems, autotools, SCons}
+  colorlinks=true,
+  bookmarks=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=4,
+  pdfpagemode=UseOutlines,
+  pdftitle={CMake [and friends] tutorial},
+  pdfauthor={Eric NOULARD},
+  pdfsubject={CMake},
+  pdfkeywords={CMake, CPack, CTest, CDash, build systems, autotools, SCons}
 }
+
+\setcounter{tocdepth}{5}% Show up to level 4 (\paragraph) in ToC (and bookmarks)
+\setcounter{secnumdepth}{5}% Show up to level 4 (\paragraph) in ToC (and bookmarks)
+
 
 %
 % Backslash '\'
@@ -140,13 +148,14 @@
 
 \title{CMake tutorial}
 \subtitle{and its friends CPack, CTest and CDash}
-\author[Your NAME - \url{your.name@whatever.com}]{Your NAME - \url{your.name@whatever.com}\\
+\author[Eric NOULARD - \url{eric.noulard@gmail.com}]{Eric NOULARD - \url{eric.noulard@gmail.com}\\
         \includegraphics[width=5cm]{figures/CMake-logo-small}\\
         \url{http://www.cmake.org}}
 \date{DRAFT compiled on \today}
 \subject{Slides for CMake, CPack, CTest, CDash presentation. In english.}
 \keywords{CMake, CPack, CTest, CDash, build systems, autotools, SCons}
 
+\pdfbookmark[0]{CMake tutorial}{cmaketut}
 \begin{frame}
 \titlepage
 \begin{center}
@@ -182,18 +191,24 @@ Initially given by Eric Noulard for Toulibre on February, $8^{th}$ 2012.
       \textcolor{cmakered}{Julien},
       \textcolor{cmakegreen}{Mathieu},
       \textcolor{cmakeblue}{Michael \& Michael},
+      \textcolor{cmakered}{Stephen},
+      \textcolor{cmakegreen}{Domen},
       \textcolor{cmakeblue}{and}  \textcolor{cmakered}{many} \textcolor{cmakegreen}{more}\ldots
 \item \textcolor{cmakegreen}{My son Louis for the nice CPack 3D logo done with Blender.}
-\item \textcolor{cmakered}{and...Toulibre for hosting this presention in Toulouse, France.}
+\item \textcolor{cmakered}{and...Toulibre for initially hosting this presention in Toulouse, France.}
 \end{itemize}
 \end{frame}
+
+\part{CMake}
+
+\section{Overview}
 
 \begin{frame}
 \frametitle{And thanks to contributors as well\ldots}
 
 {%\setbeamerfont{block title}{size=\fontsize{6pt}{9.0}}
 \begin{block}{History}
-\fontsize{6pt}{7.2}\selectfont
+\fontsize{9pt}{11}\selectfont
 This presentation  was initially made  by Eric Noulard for  a Toulibre
 (\url{http://www.toulibre.fr}) given in Toulouse (France) on February,
 $8^{th}$ 2012.  After that,  the source of  the presentation  has been
@@ -206,16 +221,14 @@ stepped-in.
 Many thanks to all contributors (alphabetical order):
 }
 \begin{block}{Contributors}
-\fontsize{6pt}{7.2}\selectfont
+ \fontsize{9pt}{11}\selectfont
  \textcolor{cmakeblue}{Sébastien Dinot},
  \textcolor{cmakered}{Andreas Mohr}.
 \end{block}
 }
 \end{frame}
 
-\section*{Outlines}
-
-\subsection*{Introduction}
+\section{Introduction}
 \begin{frame}[fragile]
 \frametitle{CMake tool sets}
 
@@ -426,12 +439,12 @@ Scale is based on the average worldwide traffic of CMake in all years.
 \end{block}
 \end{frame}
 
-\part{CMake}
 \section{Basic CMake usage}
+
 \begin{frame}
 \frametitle{A build system generator}
 \begin{itemize}
-\item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, Ninja, IDE project files, \ldots),
+\item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, Ninja, IDE project files (XCode, CodeBlocks, Visual Studio, \ldots), \ldots),
 \item CMake scripting language (declarative) is used to describe the build,
 \item The developer edits \fname{CMakeLists.txt}, invokes CMake but
       should \emph{never} edit the generated files,
@@ -1902,7 +1915,7 @@ cmake version 2.8.7
 As an example of what can be done with pure CMake script
 (script mode) here is a script for building the CMake package
 using a previously installed CMake.
-\begin{lstlisting}[basicstyle=\tiny,number=left,breaklines=true]
+\begin{lstlisting}[basicstyle=\tiny,numbers=left,breaklines=true]
 # Simple cmake script which may be used to build
 # cmake from automatically downloaded source
 #
@@ -2093,7 +2106,7 @@ set_source_files_properties(${SOME_GENERATED_FILES}
 
 \begin{frame}[fragile,allowframebreaks]
 \frametitle{Example}
-\begin{lstlisting}[basicstyle=\tiny,number=left]
+\begin{lstlisting}[basicstyle=\tiny,numbers=left]
 ### Handle Source generation for task file parser
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 find_package(LexYacc)
@@ -2172,7 +2185,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../totally-free/Toolchain-cross-mingw32-linux.cmake
 
 \begin{frame}[fragile]
 \frametitle{Linux to Win32 Toolchain example}
-\begin{lstlisting}[basicstyle=\tiny,number=left]
+\begin{lstlisting}[basicstyle=\tiny,numbers=left]
 # the name of the target operating system
 SET(CMAKE_SYSTEM_NAME Windows)
 # Choose an appropriate compiler prefix
@@ -2218,6 +2231,7 @@ No more time for that today sorry, see:
 \end{frame}
 
 \part{CPack}
+%\addcontentsline{toc}{part}{Part II: CPack}
 \progressbaroptions{
   % headline=sections,
   imagename=figures/CPack-cube-3D-opened-small.png,
@@ -2272,7 +2286,7 @@ including \fname{CPack.cmake} in the main \fname{CMakeLists.txt}:
 \begin{frame}[fragile]
 \frametitle{CPack variables in \fname{CMakeLists.txt}}
 When used with CMake, one writes something like this in \fname{CMakeLists.txt}:
-\begin{lstlisting}[basicstyle=\scriptsize,number=left]
+\begin{lstlisting}[basicstyle=\scriptsize,numbers=left]
 set(CPACK_GENERATOR "TGZ")
 if (WIN32)
    list(APPEND CPACK_GENERATOR "NSIS")
@@ -2293,7 +2307,7 @@ built-in targets.
 \begin{frame}[fragile, allowframebreaks]
 \frametitle{A CPack config file}
 A CPack config file looks like this one:
-\begin{lstlisting}[basicstyle=\scriptsize,number=left,breaklines=true]
+\begin{lstlisting}[basicstyle=\scriptsize,numbers=left,breaklines=true]
 # This file will be configured to contain variables for CPack.
 # These variables should be set in the CMake list file of the
 # project before CPack module is included.
@@ -2722,6 +2736,8 @@ More detailed documentation here:
 
 % \section{CPack and cross-compiling}
 \part{CTest and CDash}
+%\addcontentsline{toc}{part}{Part III: CTest and CDash}
+
 \progressbaroptions{
   % headline=sections,
   imagename=figures/cdash-logo.png,
