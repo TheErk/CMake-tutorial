@@ -236,12 +236,13 @@ Many thanks to all contributors (alphabetical order):
 CMake is a \emph{cross-platform build systems generator} which makes it easier
 to build software in a unified manner on a broad set of platforms:
 
-\includegraphics[width=0.7cm]{TuxLogo_48}
+\includegraphics[width=0.7cm]{TuxLogo_48},
 \includegraphics[width=0.7cm]{FreeBSDLogo_48},
-Windows, 
-Mac OS, AIX, IRIX,
+\includegraphics[width=0.7cm]{MSWindowsLogo_48},
+\includegraphics[width=0.7cm]{AppleLogo_48},
+AIX, IRIX,
 \includegraphics[width=0.7cm]{AndroidLogo},
-iOS
+\includegraphics[width=0.7cm]{AppleIOSLogo_48}
 $\cdots$
 \end{block}
 CMake has friends softwares that may be used on their own or together:
@@ -320,7 +321,12 @@ scompiled/.style={sbase,
 sinterpreted/.style={sbase,
                     node distance=1cm and 1cm,
                     bottom color=orange!70!black!20, % and something else at the bottom
-                    },
+                },
+sintercomp/.style={sbase,
+                   node distance=1cm and 1cm,
+                   top color=orange!70!black!20, % and something else at the bottom
+                   bottom color=green!70!black!20,
+                },
 stools/.style={sbase,
               rectangle,
               minimum width=0cm,
@@ -337,21 +343,22 @@ stools/.style={sbase,
 
 \onslide<1->{\node [sbase, rotate=90, minimum width=3.5cm] (language)
                                         {
-                                         \begin{tabular}{c}                    
-                                          Programming\\
-                                          languages
-                                         \end{tabular}
+                                          \begin{tabular}{c}
+                                            Programming\\
+                                            languages
+                                          \end{tabular}
                                         };
              \node [matrix, below right=0.0 cm of language.south east] (linterp) {
-                \node [sinterpreted] (python)  {Python}; \\
-                                   \node [sinterpreted] (perl)    {Perl}; \\
-                \node [sinterpreted] (ocaml)    {OCaml}; \\
+               \node [sinterpreted] (python)  {Python}; \\
+               \node [sinterpreted] (perl)    {Perl}; \\
+               \node [sinterpreted] (matlab)  {Matlab}; \\
+               \node [sintercomp] (ocaml)   {OCaml}; \\
              };
              %\node [matrix, right delimiter =\}, below=0.0cm of linterp] (lcompil) {
              \node [matrix, below=0.0cm of linterp] (lcompil) {
-                \node [scompiled]    (cxx)     {C++}; \\
+                \node [scompiled]    (ccxx)     {C/C++}; \\
                 \node [scompiled]    (fortran) {Fortran}; \\
-                \node [scompiled]    (c) {C}; \\
+                \node [scompiled]    (ada) {ADA}; \\
              };
              }
 \node[stools, above right=0cm and 3.5cm of linterp.west] (interpreter) {interpreter};
@@ -382,19 +389,28 @@ stools/.style={sbase,
 \begin{frame}
 \frametitle{Build systems: several choices}
 \begin{block}{Alternatives}
-CMake is not the only build system [generator]:
+CMake is not the only build system [generator]:\\
 \begin{itemize}
-\item (portable) hand-written Makefiles, depends on \fname{make} tool.
-\item Apache ant \url{http://ant.apache.org/}, dedicated to Java (almost).
+\item (portable) hand-written Makefiles, depends on \fname{make} tool (may be \href{https://www.gnu.org/software/make/}{GNU Make}).
+\item Apache \href{http://ant.apache.org/}{ant} (or \href{https://maven.apache.org/}{Maven} or \href{https://gradle.org/}{Gradle}), dedicated to Java (almost).
 \item Portable IDE: Eclipse, Code::Blocks, Geany, NetBeans, \ldots 
-\item GNU Autotools: Autoconf, Automake, Libtool.
+\item GNU Autotools: \href{http://www.gnu.org/software/autoconf/}{Autoconf}, Automake, Libtool.
 Produce makefiles. Bourne shell needed (and M4 macro processor).
-see e.g. \url{http://www.gnu.org/software/autoconf/}
-\item SCons: \url{http://www.scons.org}
-only depends on Python. Extensible with Python.
+\item \href{SCons}{http://www.scons.org} only depends on Python.
 \item \ldots
 \end{itemize}
 \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Build systems or build systems generator}
+\begin{block}{Build systems}
+A tool which builds, a.k.a. compiles, a set of source files in order to produce binary executables and libraries.
+Those kind of tools usually takes as input a file (e.g. a Makefile) and while reading it issue compile commands.
+The main goal of a build tool is to (re)build the minimal subset of files when something changes.
+A non exhaustive list: \href{https://www.gnu.org/software/make/}{[GNU] make}, \href{https://ninja-build.org/}{ninja}, \href{https://github.com/Microsoft/msbuild}{MSBuild}, \href{http://www.scons.org}{SCons}, \href{http://ant.apache.org/}{ant}, \ldots
+\end{block}
+A \textbf{Build systems generator} is a tool which generates files for a particular build system. e.g. \href{http://cmake.org}{CMake} or \href{http://www.gnu.org/software/autoconf/}{Autotools}.
 \end{frame}
 
 \begin{frame}
@@ -418,24 +434,24 @@ Go and forge your own opinion:
 \end{frame}
 
 \begin{frame}
-\frametitle{CMake/Auto[conf\textbar make] on Ohloh}
+\frametitle{CMake/Auto[conf\textbar make] on OpenHub}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.50\textheight]{compare_cmake_autotools_ohlo_color_transparent}
 \end{center}
-\begin{block}{\url{https://www.ohloh.net/languages/compare}}
+\begin{block}{\url{https://www.openhub.net/languages/compare}}
 Language comparison of CMake to automake and
 autoconf showing the percentage of developers commits that modify a
-source file of the respective language.
+source file of the respective language (data from 2012).
 \end{block}
 \end{frame}
 
 \begin{frame}
-\frametitle{CMake/Auto[conf\textbar make] on Google Trend}
+\frametitle{CMake/Autoconf/Gradle on Google Trend}
 \begin{center}
-\includegraphics[width=0.9\textwidth,height=0.50\textheight]{CMakeAutoconfAutomake-trend}
+\includegraphics[width=1.0\textwidth,height=0.50\textheight]{CMakeAutoconfGradle-trend-2016}
 \end{center}
 \begin{block}{\url{http://www.google.com/trends}}
-Scale is based on the average worldwide traffic of CMake in all years.
+Scale is based on the average worldwide request traffic searching for CMake, Autoconf and Gradle in all years (2004--now).
 \end{block}
 \end{frame}
 
