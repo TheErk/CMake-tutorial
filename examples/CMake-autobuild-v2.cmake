@@ -8,13 +8,20 @@
 #   tmp/cmake-x.y.z-build build tree
 # configure and compiled tree, using the tarball found on Kitware. 
 
-cmake_minimum_required(VERSION 2.8)
-set(CMAKE_VERSION "2.8.11.2")
+cmake_minimum_required(VERSION 3.0)
+set(CMAKE_VERSION "3.6.2")
 set(CMAKE_FILE_PREFIX "cmake-${CMAKE_VERSION}")
-set(CMAKE_REMOTE_PREFIX "http://www.cmake.org/files/v2.8/")
+string(REGEX MATCH "[0-9]\\.[0-9]" CMAKE_MAJOR "${CMAKE_VERSION}")
+set(CMAKE_REMOTE_PREFIX "http://www.cmake.org/files/v${CMAKE_MAJOR}/")
 set(CMAKE_FILE_SUFFIX ".tar.gz")
 set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_BUILD_QTDIALOG "ON")
+set(CMAKE_BUILD_GENERATOR "")
+#try Ninja (https://ninja-build.org) if you have it installed
+#set(CMAKE_BUILD_GENERATOR "-GNinja")
 set(CPACK_GEN "TGZ")
+#try another CPack generator
+set(CPACK_GEN "RPM")
 
 set(LOCAL_FILE "./${CMAKE_FILE_PREFIX}${CMAKE_FILE_SUFFIX}")
 set(REMOTE_FILE "${CMAKE_REMOTE_PREFIX}${CMAKE_FILE_PREFIX}${CMAKE_FILE_SUFFIX}")
@@ -53,15 +60,18 @@ execute_process(COMMAND ${CMAKE_COMMAND} -E tar zxvf ${LOCAL_FILE}
                 )
 message(STATUS "CMake version ${CMAKE_VERSION} has been unarchived in ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_FILE_PREFIX}.")
 
-message(STATUS "Configuring with CMake (build type=${CMAKE_BUILD_TYPE})...")
+message(STATUS "Configuring with CMake (build type=${CMAKE_BUILD_TYPE}, QtDialog=${CMAKE_BUILD_QTDIALOG}, build generator=${CMAKE_BUILD_GENERATOR})...")
 file(MAKE_DIRECTORY ${CMAKE_FILE_PREFIX}-build)
-execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_QtDialog:BOOL=ON ../${CMAKE_FILE_PREFIX}
+execute_process(COMMAND ${CMAKE_COMMAND} ${CMAKE_BUILD_GENERATOR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_QtDialog:BOOL=${CMAKE_BUILD_QTDIALOG} ../${CMAKE_FILE_PREFIX}
                 WORKING_DIRECTORY ${CMAKE_FILE_PREFIX}-build
                 RESULT_VARIABLE CONFIG_RES
                 OUTPUT_VARIABLE CONFIG_OUT
                 ERROR_VARIABLE CONFIG_ERR
                 TIMEOUT 200
                 )
+if (CONFIG_RES)
+   message(ERROR "Configuration failed: ${CONFIG_OUT} / ${CONFIG_ERR}")
+endif()
 
 message(STATUS "Building with cmake --build ...")
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
