@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 # This project use C source code
 project (TotallyFree C)
-
+# require specific language standard
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_EXTENSIONS False)
 
@@ -20,8 +20,7 @@ if(STATIC_BUILD)
   set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
   set(CMAKE_EXE_LINKER_FLAGS "-static")
 endif()
-# build executable using specified
-# list of source files
+# build executable using specified list of source files
 add_executable(Acrolibre acrolibre.c)
 install(TARGETS Acrolibre DESTINATION bin)
 if (WITH_ACRODICT)
