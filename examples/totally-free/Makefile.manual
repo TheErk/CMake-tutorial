@@ -1,0 +1,26 @@
+# -*- makefile -*-
+CC=gcc
+CFLAGS=-Wall -Werror -pedantic -std=c99
+LDFLAGS=
+
+EXECUTABLES=Acrodictlibre Acrolibre
+
+# Regle par defaut (la premiere)
+all : $(EXECUTABLES)
+
+Acrolibre: acrolibre.o
+	$(CC)  $(CFLAGS) -o $@ $^
+
+Acrodictlibre: acrolibre.c acrodict.o
+	$(CC)  $(CFLAGS) -DUSE_ACRODICT -o $@ $^
+
+# Implicit rule using file extension
+# Every .o file depends on corresponding .c (and may .h) file
+%.o : %.c %.h
+	$(CC) $(CFLAGS) -c $<
+
+%.o : %.c
+	$(CC) $(CFLAGS) -c $<
+
+clean:
+	@\rm -f *.o $(EXECUTABLES)

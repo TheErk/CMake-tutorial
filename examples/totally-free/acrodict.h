@@ -11,4 +11,3 @@ acrodict_get(const char* name);
 const acroItem_t*
 acrodict_get_approx(const char* name);
 #endif
-

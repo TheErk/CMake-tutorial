@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <string.h>
 #include "acrodict.h"
@@ -35,10 +36,10 @@ acrodict_get(const char* name) {
 
 const acroItem_t*
 acrodict_get_approx(const char* name) {
+#ifdef GUESS_NAME
   int current =0;
   int found   =0;
 
-#ifdef GUESS_NAME
   while ((strlen(acrodict[current].name)>0) && !found) {
     if ((strcasestr(name,acrodict[current].name)!=0) ||
         (strcasestr(acrodict[current].name,name)!=0)) {
@@ -49,7 +50,7 @@ acrodict_get_approx(const char* name) {
   }
   if (found) {
     return &(acrodict[current]);
-  } else 
+  } else
 #endif
   {
     return NULL;

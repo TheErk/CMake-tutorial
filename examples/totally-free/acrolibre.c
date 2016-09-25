@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <strings.h>
@@ -21,19 +22,23 @@ int main(int argc, char* argv[]) {
 #ifndef USE_ACRODICT
   if (strcasecmp(name,"toulibre")==0) {
     printf("Toulibre is a french organization promoting FLOSS.\n");
+    return EXIT_SUCCESS;
   }
 #else
   item = acrodict_get(name);
-  if (NULL!=item) {
+  if (NULL != item) {
     printf("%s: %s\n",item->name,item->description);
-  } else if (item=acrodict_get_approx(name)) {
-    printf("<%s> is unknown may be you mean:\n",name);
-    printf("%s: %s\n",item->name,item->description);
+    return EXIT_SUCCESS;
+  }
+  else {
+    item=acrodict_get_approx(name);
+    if (NULL != item) {
+      printf("<%s> is unknown may be you mean:\n",name);
+      printf("%s: %s\n",item->name,item->description);
+      return EXIT_SUCCESS;
+    }
   }
 #endif
-  else {
-    printf("Sorry, I don't know: <%s>\n",name);
-    return EXIT_FAILURE;
-  }
-  return EXIT_SUCCESS;
+  printf("Sorry, I don't know: <%s>\n",name);
+  return EXIT_FAILURE;
 }

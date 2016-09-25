@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 3.0)
 # This project use C source code
 project (TotallyFree C)
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_EXTENSIONS False)
+
 set(TotallyFree_VERSION_MAJOR 1)
 set(TotallyFree_VERSION_MINOR 0)
 # Build option with default value to ON
@@ -10,6 +13,13 @@ if(NOT WIN32)
   option(WITH_GUESS_NAME "Guess acronym name" ON)
 endif(NOT WIN32)
 set(BUILD_SHARED_LIBS true)
+
+option(STATIC_BUILD "Build static executable" OFF)
+if(STATIC_BUILD)
+  set(BUILD_SHARED_LIBS false)
+  set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+  set(CMAKE_EXE_LINKER_FLAGS "-static")
+endif()
 # build executable using specified
 # list of source files
 add_executable(Acrolibre acrolibre.c)
