@@ -3,9 +3,12 @@
 *~
 *.bbl
 *.blg
+*.fls
+*.fdb_latexmk
 CMake-tutorial.nav
 CMake-tutorial.out
 CMake-tutorial.snm
 CMake-tutorial.toc
 CMake-tutorial.vrb
+
 
