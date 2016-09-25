@@ -6,7 +6,15 @@
 # you should end up with a
 #   tmp/cmake-x.y.z source tree
 #   tmp/cmake-x.y.z-build build tree
-# configure and compiled tree, using the tarball found on Kitware. 
+# configure and compiled tree, using the tarball found on Kitware.
+#
+# if you access the internet through a proxy then you should
+# set the "http_proxy" and "https_proxy" environment variable
+# to apppropriate value before running the CMake script.
+#  e.g.:
+#     export http_proxy=http://myproxy.mydomain.fr:80
+#     export https_proxy=https://myproxy.mydomain.fr:80
+
 
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_VERSION "3.6.2")
