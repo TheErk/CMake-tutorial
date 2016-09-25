@@ -69,6 +69,10 @@
 \usetikzlibrary{shadows}
 \usetikzlibrary{positioning}
 \usetikzlibrary{shadings}
+\usetikzlibrary{calc}
+\tikzstyle{na} = [baseline=-.5ex]
+\tikzstyle{every picture}+=[remember picture]
+
 
 %\usepackage[underline=true,rounded corners=false]{pgf-umlsd}
 
@@ -406,11 +410,29 @@ Produce makefiles. Bourne shell needed (and M4 macro processor).
 \frametitle{Build systems or build systems generator}
 \begin{block}{Build systems}
 A tool which builds, a.k.a. compiles, a set of source files in order to produce binary executables and libraries.
-Those kind of tools usually takes as input a file (e.g. a Makefile) and while reading it issue compile commands.
+Those kind of tools usually takes as input a file (e.g. a Makefile) and while reading it issues compile commands.
 The main goal of a build tool is to (re)build the minimal subset of files when something changes.
 A non exhaustive list: \href{https://www.gnu.org/software/make/}{[GNU] make}, \href{https://ninja-build.org/}{ninja}, \href{https://github.com/Microsoft/msbuild}{MSBuild}, \href{http://www.scons.org}{SCons}, \href{http://ant.apache.org/}{ant}, \ldots
 \end{block}
 A \textbf{Build systems generator} is a tool which generates files for a particular build system. e.g. \href{http://cmake.org}{CMake} or \href{http://www.gnu.org/software/autoconf/}{Autotools}.
+\end{frame}
+
+\begin{frame}
+  \frametitle{What build systems do?}
+  \begin{block}{Targets and sources}
+    The main feature of a build system is to offer a way to describe how a target (executable, PDF, shared library\ldots) is built from its sources (set of object files and/or libraries, a latex or rst file, set of C/C++/Fortran files\ldots). Basically a \emph{target} \textbf{depends} on one or several {sources} and one can run a set of \textbf{commands} in order to built the concerned \emph{target} from its \emph{sources}. 
+  \end{block}
+  The main goals/features may be summarized as:
+  \begin{itemize}
+  \item describe dependency graph between sources and targets
+  \item associate one or several commands to \emph{rebuilt} target from source(s)
+  \item issue the \emph{minimal} set of commands in order to rebuild a target
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[label=samplemakefile,fragile]
+  \frametitle{A sample \texttt{Makefile} for \texttt{make}}
+\lstinputlisting[basicstyle=\tiny,numbers=left,firstline=2,language=make]{examples/totally-free/Makefile.manual}
 \end{frame}
 
 \begin{frame}
@@ -450,7 +472,7 @@ source file of the respective language (data from 2012).
 \begin{center}
 \includegraphics[width=1.0\textwidth,height=0.50\textheight]{CMakeAutoconfGradle-trend-2016}
 \end{center}
-\begin{block}{\url{http://www.google.com/trends}}
+\begin{block}{\url{https://www.google.com/trends}}
 Scale is based on the average worldwide request traffic searching for CMake, Autoconf and Gradle in all years (2004--now).
 \end{block}
 \end{frame}
@@ -460,11 +482,12 @@ Scale is based on the average worldwide request traffic searching for CMake, Aut
 \begin{frame}
 \frametitle{A build system generator}
 \begin{itemize}
-\item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, Ninja, IDE project files (XCode, CodeBlocks, Visual Studio, \ldots), \ldots),
+\item CMake is a \emph{generator}: it generates \emph{native} build systems files (Makefile, Ninja, IDE project files [XCode, CodeBlocks, Eclipse CDT, Codelite, Visual Studio, Sublime Text\ldots], \ldots),
 \item CMake scripting language (declarative) is used to describe the build,
 \item The developer edits \fname{CMakeLists.txt}, invokes CMake but
       should \emph{never} edit the generated files,
 \item CMake may be (automatically) re-invoked by the build system,
+\item CMake has friends who may be very handy (CPack, CTest, CDash)
 \end{itemize}
 \end{frame}
 
@@ -483,7 +506,7 @@ Scale is based on the average worldwide request traffic searching for CMake, Aut
 \onslide<1->{
 \begin{alertblock}{When do things take place?}
 CMake is a \emph{generator} which means it does not compile (i.e. build) the sources,
-the underlying build tool (make, XCode, Code::Blocks\ldots) does.
+the underlying build tool (make, Ninja, XCode, Visual Studio\ldots) does.
 \end{alertblock}
 }
 \end{frame}
@@ -647,20 +670,21 @@ sbase/.style={      % The shape:
 
 \begin{frame}[fragile]
 \frametitle{Building an executable}
-\begin{lstlisting}[caption=Building a simple program]
-cmake_minimum_required (VERSION 2.8)
+\begin{lstlisting}[basicstyle=\scriptsize,caption=Building a simple program]
+cmake_minimum_required (VERSION 3.0)
 # This project use C source code
 project (TotallyFree C)
-# build executable using specified
-# list of source files
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_EXTENSIONS False)
+# build executable using specified list of source files
 add_executable(Acrolibre acrolibre.c)
 \end{lstlisting}
 CMake scripting language is [mostly] declarative.
 It has \emph{commands} which are documented from within CMake:
-{\scriptsize
+{\tiny
 \begin{verbatim}
  $ cmake --help-command-list | wc -l 
- 96
+ 117
  $ cmake --help-command add_executable
 ...
   add_executable
@@ -669,27 +693,45 @@ It has \emph{commands} which are documented from within CMake:
 }
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile,allowframebreaks]
 \frametitle{Builtin documentation}
-\begin{Verbatim}[commandchars=\\\{\},fontsize=\scriptsize,numbers=left,frame=topline,label=CMake builtin doc for 'project' command]
-$ cmake --help-command project 
-cmake version 2.8.7.20120121-g751713-dirty
-  project
-       Set a name for the entire project.
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\tiny,numbers=left,frame=topline,label=CMake builtin doc for 'project' command]
+  $ cmake --help-command project
+project
+-------
 
-         project(<projectname> [languageName1 languageName2 ... ] )
+Set a name, version, and enable languages for the entire project.
 
-       Sets the name of the project.  Additionally this sets the variables
-       <projectName>_BINARY_DIR and <projectName>_SOURCE_DIR to the
-       respective values.
+ project(<PROJECT-NAME> [LANGUAGES] [<language-name>...])
+ project(<PROJECT-NAME>
+         [VERSION <major>[.<minor>[.<patch>[.<tweak>]]]]
+         [LANGUAGES <language-name>...])
 
+Sets the name of the project and stores the name in the
+``PROJECT_NAME`` variable.
+[...]
        Optionally you can specify which languages your project supports.
-       Example languages are \textcolor{cmakeblue}{CXX} (i.e.  C++), \textcolor{cmakeblue}{C}, \textcolor{cmakeblue}{Fortran}, etc.  By \textcolor{cmakered}{default C}
-       \textcolor{cmakered}{and CXX are enabled}.  E.g.  if you do not have a C++ compiler, you can
-       disable the check for it by explicitly listing the languages you want
-       to support, e.g.  C.  By using the special language "\textcolor{cmakeblue}{NONE}" all checks
-       for any language can be disabled.
+       Example languages are \textcolor{cmakeblue}{CXX} (i.e.  C++), \textcolor{cmakeblue}{C}, \textcolor{cmakeblue}{Fortran}, etc.  By \textcolor{cmakered}{default C} \textcolor{cmakered}{and CXX are enabled}.
+       E.g.  if you do  not have a C++ compiler, you can disable the check  for it by  explicitly
+       listing the languages  you want  to support, e.g.  C. By using the special language "\textcolor{cmakeblue}{NONE}"
+       all checks for any language can be disabled.
 \end{Verbatim}
+CMake doc online: \url{https://cmake.org/documentation/}\\
+Unix Manual: {\scriptsize \texttt{cmake-variables(7)}, \texttt{cmake-commands(7)}, \texttt{cmake-xxx(7)}, \ldots}
+
+QtHelp file as well (generated using \href{http://www.sphinx-doc.org/en/stable/builders.html}{Sphinx})
+\begin{enumerate}
+\item get QtHelp file from CMake: \url{https://cmake.org/cmake/help/v3.6/CMake.qch} and copy it to \texttt{CMake-tutorial/examples/}
+\item use CMake.qhcp you may find in the source of this tutorial:
+
+  \texttt{CMake-tutorial/examples/CMake.qhcp}
+\item compile QtHelp collection file:
+
+  \texttt{qcollectiongenerator CMake.qhcp -o CMake.qhc}
+\item display it using Qt Assistant:
+
+  \texttt{assistant -collectionFile CMake.qhc}
+\end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -733,7 +775,7 @@ In-source build is a \emph{BAD} choice.
 Out-of-source build is \emph{always} better because:
 \begin{enumerate}
 \pause
-\item Generated files are separate from manually edited ones
+\item Generated files are separated from manually edited ones
 
       (thus you don't have to clutter your favorite VCS ignore files).
 \pause
@@ -757,7 +799,7 @@ We now have the following set of files in our source tree:
 \item \fname{acrolibre.c}, the main C program
 \item \fname{acrodict.h}, the Acrodict library header
 \item \fname{acrodict.c}, the Acrodict library source
-\item \fname{CMakeLists.txt}, the soon to be updated CMake entry file
+\item \fname{CMakeLists.txt}, the soon to be updated CMake input file
 \end{itemize}
 \end{frame}
 
@@ -866,29 +908,44 @@ acrodict_get(const char* name) {
 \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]
+\againframe{samplemakefile}
+
+\begin{frame}[fragile]
 \frametitle{Building a library}
 \vspace*{-0.5cm}
-\begin{lstlisting}[basicstyle=\scriptsize,caption=Building a simple program + shared library]
-cmake_minimum_required (VERSION 2.8)
-project (TotallyFree C)
+\begin{lstlisting}[basicstyle=\tiny,caption=Building a simple program + shared library]
+cmake_minimum_required (VERSION 3.0)
+project (TotallyFree C) 
+(*@\tikz[na] \coordinate(PdstC99);@*)set(CMAKE_C_STANDARD 99) 
+set(CMAKE_C_EXTENSIONS False)
 add_executable(Acrolibre acrolibre.c)
-set(LIBSRC acrodict.c acrodict.h) (*@\label{vardef}@*)
-add_library(acrodict ${LIBSRC})  (*@\label{libdef}@*)
+(*@\tikz[na] \coordinate(PdstVarDef);@*)set(LIBSRC acrodict.c acrodict.h) 
+add_library(acrodict ${LIBSRC})(*@\tikz[na] \coordinate(PdstLibDef);@*)
 add_executable(Acrodictlibre acrolibre.c)
 target_link_libraries(Acrodictlibre acrodict) (*@\label{linkline}@*)
-set_target_properties(Acrodictlibre (*@\label{propdefbeg}@*)
-                     PROPERTIES COMPILE_FLAGS "-DUSE_ACRODICT") (*@\label{propdefend}@*)
+set_target_properties(Acrodictlibre PROPERTIES COMPILE_FLAGS "-DUSE_ACRODICT") (*@\label{propdef}@*)
 \end{lstlisting}
-% $
 \begin{itemize}
-\pause
-\item we define a variable (line \ref{vardef}) and build library (line \ref{libdef})
-\pause
-\item we compile the source files of a particular target with specific compiler options (lines \ref{propdefbeg}-\ref{propdefend})
-\pause
+\item \tikz[na] \coordinate(PsrcC99);we precise that we want to compile with C99 flags
+\item \tikz[na] \coordinate(PsrcVarDef);we define a variable and build library\tikz[na] \coordinate(PsrcLibDef);
+\item we compile the source files of a particular target with specific compiler options (line \ref{propdef})
 \item we link an executable to our library (line \ref{linkline})
 \end{itemize}
+
+\begin{tikzpicture}[overlay]
+  \only<1>{
+    \path[->, red, thick] ($(PsrcC99)+(-0.5,0)$) edge[bend left] (PdstC99);
+  }
+  \only<2>{
+    \path[->, red, thick] ($(PsrcVarDef)+(-0.5,0)$) edge[bend left] ($(PdstVarDef)+(0,-0.1)$);
+    %\path[->, red, thick] ($(PsrcLibDef)+(0,0)$) edge[bend right] (PdstLibDef);
+  }
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+\frametitle{Building a library - continued}
 
 \begin{block}{And it builds...}
 All in all CMake generates appropriate Unix makefiles which build
