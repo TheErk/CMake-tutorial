@@ -963,14 +963,14 @@ add_executable(Acrolibre acrolibre.c)
 (*@\tikz[na] \coordinate(PdstVarDef);@*)set(LIBSRC acrodict.c acrodict.h) 
 add_library(acrodict ${LIBSRC})(*@\tikz[na] \coordinate(PdstLibDef);@*)
 add_executable(Acrodictlibre acrolibre.c)
-target_link_libraries(Acrodictlibre acrodict) (*@\label{linkline}@*)
-set_target_properties(Acrodictlibre PROPERTIES COMPILE_FLAGS "-DUSE_ACRODICT") (*@\label{propdef}@*)
+(*@\tikz[na] \coordinate(PdstLinkOpt);@*)target_link_libraries(Acrodictlibre acrodict) (*@\label{linkline}@*)
+(*@\tikz[na] \coordinate(PdstCompilOpt);@*)set_target_properties(Acrodictlibre PROPERTIES COMPILE_FLAGS "-DUSE_ACRODICT") (*@\label{propdef}@*)
 \end{lstlisting}
 \begin{itemize}
-\item \tikz[na] \coordinate(PsrcC99);we precise that we want to compile with C99 flags
-\item \tikz[na] \coordinate(PsrcVarDef);we define a variable and build library\tikz[na] \coordinate(PsrcLibDef);
-\item we compile the source files of a particular target with specific compiler options (line \ref{propdef})
-\item we link an executable to our library (line \ref{linkline})
+\item<1-> \tikz[na] \coordinate(PsrcC99);we precise that we want to compile with C99 flags
+\item<2-> \tikz[na] \coordinate(PsrcVarDef);we define a variable and ask to build a library\tikz[na] \coordinate(PsrcLibDef);
+\item<3-> \tikz[na] \coordinate(PsrcLinkOpt);we link an executable to our library %(line \ref{linkline})
+\item<4-> \tikz[na] \coordinate(PsrcCompilOpt);we compile the source files of a particular target with specific compiler options
 \end{itemize}
 
 \begin{tikzpicture}[overlay]
@@ -979,7 +979,12 @@ set_target_properties(Acrodictlibre PROPERTIES COMPILE_FLAGS "-DUSE_ACRODICT") (
   }
   \only<2>{
     \path[->, red, thick] ($(PsrcVarDef)+(-0.5,0)$) edge[bend left] ($(PdstVarDef)+(0,-0.1)$);
-    %\path[->, red, thick] ($(PsrcLibDef)+(0,0)$) edge[bend right] (PdstLibDef);
+  }
+  \only<3>{
+    \path[->, red, thick] ($(PsrcLinkOpt)+(-0.5,0)$) edge[bend left] ($(PdstLinkOpt)+(0,0)$);
+  }
+  \only<4>{
+    \path[->, red, thick] ($(PsrcCompilOpt)+(-0.5,0)$) edge[bend left] ($(PdstCompilOpt)+(0,0)$);
   }
 \end{tikzpicture}
 
@@ -1042,6 +1047,11 @@ expected ones:
 \item more to come \ldots
 \end{itemize}
 \end{multicols}
+
+\begin{alertblock}{And it is homogeneously done whatever the generator...}
+  The obtained build system contains the same set of targets whatever the combination
+  of generator and [cross-]compiler used: Makefile+gcc, Ninja+clang, XCode, Visual Studio, etc\ldots
+\end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1071,20 +1081,23 @@ endif(WITH_ACRODICT)
 \end{frame}
 
 
-\begin{frame}[allowframebreaks]
-\frametitle{Too much keyboard, time to click?}
+\begin{frame}[fragile,allowframebreaks]
+  \frametitle{Too much keyboard, time to click?}
+
 \begin{block}{CMake comes with severals tools}
-A matter of choice / taste:
+  A matter of choice / taste:
+  \vspace*{0.4cm}
 \begin{itemize}
 \item a command line: \fname{cmake}
 \item a curses-based TUI: \fname{ccmake}
 \item a Qt-based GUI: \fname{cmake-gui}
 \end{itemize}
 \end{block}
+
 \begin{alertblock}{Calling convention}
 All tools expect to be called with a single argument
 which may be interpreted in 2 different ways.
-\vspace*{0.3cm}
+\vspace*{0.4cm}
 \begin{itemize}
 \item path to the source tree, e.g.: \fname{cmake /path/to/source}
 \item path to an \alert{existing} build tree, e.g.: \fname{cmake-gui .}
@@ -1144,8 +1157,7 @@ we are running on {Unix}, \textcolor{cmakered}{Apple},
  KDevelop3
  KDevelop3 - Unix Makefiles
  \textcolor{cmakered}{XCode}
- Ninja (in development)
- {\scriptsize  \url{http://martine.github.com/ninja/}}
+ Ni\textcolor{cmakeblue}{nj}\textcolor{cmakered}{a}
 \end{Verbatim}
 
 \end{multicols}
@@ -1165,6 +1177,7 @@ in a
  acrodict.h acrodict.c acrolibre.c  CMakeLists.txt
  $ mkdir build-win32
  $ cd build-win32
+ $ cmake -DCMAKE_TOOLCHAIN_FILE=../totally-free/Toolchain-cross-linux.cmake ../totally-free
  ...
  $ make
  Scanning dependencies of target acrodict
@@ -1241,7 +1254,7 @@ Then depending on when you install:
 \frametitle{Using CMake variables}
 \begin{block}{CMake variables}
 They are used by the user to simplify its \fname{CMakeLists.txt},
-but CMake uses many (\textasciitilde 170+) of them to control/change its [default] behavior.
+but CMake uses many (\textasciitilde 400+) of them to control/change its [default] behavior.
 Try: \texttt{cmake --help-variables-list}.
 \end{block}
 \begin{block}{Inside a CMake script}
@@ -1386,7 +1399,7 @@ $ rpm -qpl TotallyFree-0.1.0-Linux.rpm
 \vspace*{-0.4cm}
 \begin{block}{CTest}
 CTest is a CMake friend application (detailed later) which may be used to
-easily test your software.
+easily test your software (if not cross-compiled though).
 \end{block}
 \vspace*{-0.7cm}
 \begin{multicols}{2}
@@ -1417,11 +1430,8 @@ Test project <buildtree-prefix>/build
 3/4 Test #3: FLOSS-dict ..........   Passed  0.00 sec
     Start 4: FLOSS-fail
 \textcolor{orange}{4/4 Test #4: FLOSS-fail ..........***Failed  0.00 sec}
-
 75% tests passed, 1 tests failed out of 4
-
 Total Test time (real) =   0.01 sec
-
 The following tests FAILED:
 	  4 - FLOSS-fail (Failed)
 \end{Verbatim}
@@ -1477,8 +1487,7 @@ Total Test time (real) =   0.01 sec
 \begin{frame}[fragile]
 \frametitle{CTest the testing friend}
 \begin{block}{CTest is a standalone generic test driver}
-As we will see later on, CTest is standalone application,
-which can run a set of \emph{test} programs.
+CTest is standalone application, which can run a set of \emph{test} programs.
 \end{block}
 \vspace*{-0.5cm}
 \begin{multicols}{2}
@@ -1556,19 +1565,15 @@ Using CMake basics we can already do a lot of things with minimal writing.
 \frametitle{Seeking more information or help}
 There are several places you can go by yourself:
 \begin{enumerate}
-\item Read the FAQ:
-
-      \url{http://www.cmake.org/Wiki/CMake_FAQ}
-\item Read the Wiki:
-
-      \url{http://www.cmake.org/Wiki/CMake}
-\item Ask on the Mailing List:
-
-      \url{http://www.cmake.org/cmake/help/mailing.html}
-
+\item {\tiny(re-)}Read the documentation: \url{https://cmake.org/documentation}
+\item Read the FAQ: \url{https://cmake.org/Wiki/CMake_FAQ}
+\item Read the Wiki: \url{https://cmake.org/Wiki/CMake}
+\item Ask on the Mailing List: \url{https://cmake.org/mailing-lists}
 \item Browse the built-in help:
 
-     \fname{cmake --help-xxxxx}
+     \fname{man cmake-xxxx}\\
+     \fname{cmake --help-xxxxx}\\
+     \fname{assistant -collectionFile examples/CMake.qhc}
 \end{enumerate}
 \end{frame}
 
@@ -1577,8 +1582,7 @@ There are several places you can go by yourself:
 \begin{frame}[fragile]
 \frametitle{How to discover system}
 \begin{block}{System/compiler specific variables}
-Right after the \lstinline!project! command CMake has set up
-a bunch of variables which can be used to tailor
+Right after the \lstinline!project! command CMake has set up variables which can be used to tailor
 the build in a platform specific way.
 \end{block}
 \lstset{basicstyle=\small}
@@ -1589,12 +1593,11 @@ the build in a platform specific way.
 \item \lstinline!UNIX! True for UNIX and UNIX like operating systems.
 \item \lstinline!APPLE! True if running on Mac OS X.
 \item \lstinline!CYGWIN! True for Cygwin.
+\item Have a look at \fname{cmake --system-information} output
 \end{itemize}
 \item compiler specific
 \begin{itemize}
-\item \lstinline!MSVC! True when using Microsoft Visual C
-\item \lstinline!CMAKE_COMPILER_IS_GNU<LANG>! True if the \lstinline!<LANG>! compiler is GNU.
-\item \lstinline!MINGW! true if the compiler is MinGW.
+\item \lstinline!CMAKE_<LANG>_COMPILER_ID! A short string unique to the compiler vendor : Clang, GNU, MSVC, Cray, Absoft TI, XL\ldots
 \end{itemize}
 \end{itemize}
 \lstset{basicstyle=\normalsize}
@@ -1662,16 +1665,13 @@ of their \fname{CMakeLists.txt} which deal with system/compiler
 specific option/feature.
 \end{block}
 \begin{itemize}
-\item MuseScore : \url{http://musescore.org}
-
-      {\tiny \url{http://mscore.svn.sourceforge.net/viewvc/mscore/trunk/mscore/mscore/}}
-
-      \alert{Display \fname{CMakeLists.txt} from MuseScore}
-\item CERTI : \url{https://savannah.nongnu.org/projects/certi/}
-
-      {\tiny \url{http://cvs.savannah.gnu.org/viewvc/certi/?root=certi}}
-\item CMake (of course): \url{http://www.cmake.org}
-\item LLVM: \url{http://llvm.org/docs/CMake.html}
+\item \href{http://musescore.org}{MuseScore}
+\item \href{https://savannah.nongnu.org/projects/certi/}{CERTI},
+{\scriptsize \url{http://git.savannah.gnu.org/cgit/certi.git/tree}}
+\item \href{https://forge.onera.fr/projects/schedmcore}{SchedMCore},
+{\scriptsize \url{https://svn.onera.fr/schedmcore/trunk/}}
+\item \href{http://cmake.org}{CMake} (of course)
+\item \href{http://llvm.org}{LLVM}, {\scriptsize \url{http://llvm.org/docs/CMake.html}}
 \item many more \ldots
 \end{itemize}
 \end{frame}
@@ -1682,6 +1682,7 @@ specific option/feature.
 Sometimes it's easier to test for features and then write a
 configuration file (\fname{config.h}, \fname{project\_config.h}, \ldots).
 The CMake way to do that is to:
+\vspace*{0.4cm}
 \begin{enumerate}
 \item lookup system information using CMake variable, functions, macros (built-in or imported)
       then set various variables,
@@ -1803,24 +1804,19 @@ target_link_libraries(MyTarget ${LIBXML2_LIBRARIES})
      \item \fname{XXX\_LIBRARY\_DIRS}: Optionally, the final set of library directories listed in one variable for use by client code.
      \end{enumerate}
 \item See doc \fname{cmake --help-module FindLibXml2}
-\item Many modules are provided by CMake (130 as of CMake 2.8.7)
+\item Many modules are provided by CMake (230 as of CMake 3.6.2)
+\item Projects which are built with CMake usually provide a \emph{Project Config} file
+      see doc: \url{https://cmake.org/cmake/help/git-master/manual/cmake-packages.7.html}
 \item You may write your own:
 
-      \url{http://www.cmake.org/Wiki/CMake:Module_Maintainers}
-\item You may find/borrow modules from other projects which use CMake
-      \begin{itemize}
-      \item KDE4: \url{http://websvn.kde.org/trunk/KDE/kdelibs/cmake/modules/}
-      \item PlPlot: \url{http://plplot.svn.sourceforge.net/viewvc/plplot/trunk/cmake/modules/}
-      \item \url{http://cmake-modules.googlecode.com/svn/trunk/Modules/}
-      \item probably many more\ldots
-      \end{itemize}
+      \url{https://cmake.org/Wiki/CMake:Module_Maintainers}
 \item A module may provide not only CMake variables but new CMake macros
       (we will see that later with the \lstinline!MACRO!, \lstinline!FUNCTION!
        CMake language commands)
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile, allowframebreaks]
+\begin{frame}[fragile]
 \frametitle{The other \lstinline!find_xxxx! commands}
 \begin{block}{The \lstinline!find_xxx! command family}
 \lstinline!find_package! is a \emph{high level} module finding mechanism
@@ -1833,55 +1829,15 @@ find modules or anything else inside \fname{CMakeLists.txt}
 \item to find any kind of file: \lstinline!find_file!
 \item to find a path where a file resides: \lstinline!find_path!
 \end{itemize}
+\end{frame}
 
-\begin{lstlisting}[basicstyle=\tiny]
-# - Find Prelude compiler
-# Find the Prelude synchronous language compiler with associated includes path.
-# See http://www.lifl.fr/~forget/prelude.html
-# This module defines
-#  PRELUDE_COMPILER, the prelude compiler
-#  PRELUDE_COMPILER_VERSION, the version of the prelude compiler
-#  PRELUDE_INCLUDE_DIR, where to find dword.h, etc.
-#  PRELUDE_FOUND, If false, Prelude was not found.
-# On can set PRELUDE_PATH_HINT before using find_package(Prelude) and the
-# module with use the PATH as a hint to find preludec.
-...
-if(PRELUDE_PATH_HINT)
-  message(STATUS "FindPrelude: using PATH HINT: ${PRELUDE_PATH_HINT}")
-else()
-  set(PRELUDE_PATH_HINT)
-endif()
-# FIND_PROGRAM twice using NO_DEFAULT_PATH on first shot
-find_program(PRELUDE_COMPILER NAMES preludec
-  PATHS ${PRELUDE_PATH_HINT} PATH_SUFFIXES bin
-  NO_DEFAULT_PATH
-  DOC "Path to the Prelude compiler command 'preludec'")
-find_program(PRELUDE_COMPILER NAMES preludec
-  PATHS ${PRELUDE_PATH_HINT} PATH_SUFFIXES bin
-  DOC "Path to the Prelude compiler command 'preludec'")
+\begin{frame}[fragile, allowframebreaks]
+  \frametitle{\texttt{FindPrelude.cmake} example}
 
-if(PRELUDE_COMPILER)
-    # get the path where the prelude compiler was found
-    get_filename_component(PRELUDE_PATH ${PRELUDE_COMPILER} PATH)
-    # remove bin
-    get_filename_component(PRELUDE_PATH ${PRELUDE_PATH} PATH)
-    # add path to PRELUDE_PATH_HINT
-    list(APPEND PRELUDE_PATH_HINT ${PRELUDE_PATH})
-    execute_process(COMMAND ${PRELUDE_COMPILER} -version
-        OUTPUT_VARIABLE PRELUDE_COMPILER_VERSION
-        OUTPUT_STRIP_TRAILING_WHITESPACE)
-endif(PRELUDE_COMPILER)
+  The \texttt{FindPrelude.cmake} is part of the \emph{Prelude} synchronous language compiler made by ONERA:
+  \url{https://forge.onera.fr/projects/Prelude}. This a source-to-source compiler which takes as input prelude file (\texttt{.plul}) and generates a bunch of C files which may be compiled in a dynamic library. The \texttt{FindPrelude.cmake} helps to automatize this task.
 
-find_path(PRELUDE_INCLUDE_DIR NAMES dword.h
-          PATHS ${PRELUDE_PATH_HINT}  PATH_SUFFIXES lib/prelude
-          DOC "The Prelude include headers")
-...
-# handle the QUIETLY and REQUIRED arguments and set PRELUDE_FOUND to TRUE if
-# all listed variables are TRUE
-include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(PRELUDE
-                                  REQUIRED_VARS PRELUDE_COMPILER PRELUDE_INCLUDE_DIR)
-\end{lstlisting}
+  \lstinputlisting[basicstyle=\tiny]{FindPrelude.cmake}
 \end{frame}
 
 \begin{frame}[fragile, allowframebreaks]
