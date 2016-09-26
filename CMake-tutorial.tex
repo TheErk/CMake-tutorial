@@ -760,8 +760,8 @@ QtHelp file as well:\\
 \begin{Verbatim}[commandchars=\\\{\},fontsize=\tiny,numbers=left,frame=topline,label=Building with ninja]
  $ ls totally-free
  acrolibre.c  CMakeLists.txt
- $ mkdir build
- $ cd build
+ $ \textcolor{cmakered}{mkdir build-ninja}
+ $ \textcolor{cmakered}{cd build-ninja}
  $ cmake \textcolor{cmakered}{-GNinja} ../totally-free
  -- The C compiler identification is GNU 4.6.2
  -- Check for working C compiler: /usr/bin/gcc
@@ -774,11 +774,29 @@ QtHelp file as well:\\
 \end{Verbatim}
 }
 
+\defverbatim[colored]{\gencrosswin}{
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\tiny,numbers=left,frame=topline,label=Building with cross-compiler]
+ $ ls totally-free
+ acrolibre.c  CMakeLists.txt
+ $ \textcolor{cmakegreen}{mkdir build-win32}
+ $ \textcolor{cmakegreen}{cd build-win32}
+ $ cmake \textcolor{cmakegreen}{-DCMAKE_TOOLCHAIN_FILE=../totally-free/Toolchain-cross-linux.cmake} ../totally-free
+ -- The C compiler identification is GNU 6.1.1
+ -- Check for working C compiler: /usr/bin/i686-w64-mingw32-gcc
+ ...
+ $ \textcolor{cmakegreen}{make}
+ ...
+ [100%] Linking C executable Acrolibre\textcolor{cmakegreen}{.exe}
+ [100%] Built target Acrolibre
+ $ ./Acrolibre toulibre
+\end{Verbatim}
+}
+
 \begin{frame}[fragile]
 \frametitle{Generating \& building}
-Building with CMake and \only<1>{\textcolor{cmakeblue}{make}}\only<2>{\textcolor{cmakered}{ninja}} is easy:
+\only<3>{\textcolor{cmakegreen}{Cross-}}Building with CMake and \only<1,3>{\textcolor{cmakeblue}{make}}\only<2>{\textcolor{cmakered}{ninja}} is easy:
 \begin{center}
-\only<1>{\genmake}\only<2>{\genninja}
+\only<1>{\genmake}\only<2>{\genninja}\only<3>{\gencrosswin}
 \end{center}
 \onslide<1->{
 \begin{alertblock}{Source tree vs Build tree}
