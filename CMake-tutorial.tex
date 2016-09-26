@@ -441,7 +441,7 @@ A \textbf{Build systems generator} is a tool which generates files for a particu
 \begin{alertblock}{Disclaimer}
 This presentation is biased. \emph{I mean totally}.
 
-I am a big CMake fan, I'm contributing to CMake, thus I'm not
+I am a big CMake fan, I did contribute to CMake, thus I'm not
 impartial \emph{at all}. But I will be ready to discuss why CMake
 is the greatest build system out there :-)
 \end{alertblock}
@@ -716,29 +716,30 @@ Sets the name of the project and stores the name in the
        listing the languages  you want  to support, e.g.  C. By using the special language "\textcolor{cmakeblue}{NONE}"
        all checks for any language can be disabled.
 \end{Verbatim}
-CMake doc online: \url{https://cmake.org/documentation/}\\
-Unix Manual: {\scriptsize \texttt{cmake-variables(7)}, \texttt{cmake-commands(7)}, \texttt{cmake-xxx(7)}, \ldots}
-
-QtHelp file as well (generated using \href{http://www.sphinx-doc.org/en/stable/builders.html}{Sphinx})
+Online doc : \url{https://cmake.org/documentation/}\\
+Unix Manual: {\scriptsize \texttt{cmake-variables(7)}, \texttt{cmake-commands(7)}, \texttt{cmake-xxx(7)}, \ldots}\\
+All doc generated using \href{http://www.sphinx-doc.org/en/stable/builders.html}{Sphinx},
+QtHelp file as well:\\
+\begin{small}
 \begin{enumerate}
-\item get QtHelp file from CMake: \url{https://cmake.org/cmake/help/v3.6/CMake.qch} and copy it to \texttt{CMake-tutorial/examples/}
+\item get QtHelp file from CMake: \url{https://cmake.org/cmake/help/v3.6/CMake.qch}
+
+      and copy it to \texttt{CMake-tutorial/examples/}
 \item use CMake.qhcp you may find in the source of this tutorial:
 
-  \texttt{CMake-tutorial/examples/CMake.qhcp}
+      \texttt{CMake-tutorial/examples/CMake.qhcp}
 \item compile QtHelp collection file:
 
-  \texttt{qcollectiongenerator CMake.qhcp -o CMake.qhc}
+      \texttt{qcollectiongenerator CMake.qhcp -o CMake.qhc}
 \item display it using Qt Assistant:
 
   \texttt{assistant -collectionFile CMake.qhc}
 \end{enumerate}
+\end{small}
 \end{frame}
 
-\begin{frame}[fragile]
-\frametitle{Generating \& building}
-Building with CMake is easy:
-\begin{center}
-\begin{Verbatim}[fontsize=\tiny,numbers=left,frame=topline,label=CMake + Unix Makefile]
+\defverbatim[colored]{\genmake}{
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\tiny,numbers=left,frame=topline,label=Building with make]
  $ ls totally-free
  acrolibre.c  CMakeLists.txt
  $ mkdir build
@@ -748,20 +749,42 @@ Building with CMake is easy:
  -- Check for working C compiler: /usr/bin/gcc
  -- Check for working C compiler: /usr/bin/gcc -- works
  ...
- $ make
- Scanning dependencies of target Acrolibre
- [100%] Building C object CMakeFiles/Acrolibre.dir/acrolibre.c.o
- Linking C executable Acrolibre
- [100%] Built target Acrolibre
+ $ \textcolor{cmakeblue}{make}
+ ...
+  [100%] Built target Acrolibre
  $ ./Acrolibre toulibre
 \end{Verbatim}
-%$
+ }
 
+\defverbatim[colored]{\genninja}{
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\tiny,numbers=left,frame=topline,label=Building with ninja]
+ $ ls totally-free
+ acrolibre.c  CMakeLists.txt
+ $ mkdir build
+ $ cd build
+ $ cmake \textcolor{cmakered}{-GNinja} ../totally-free
+ -- The C compiler identification is GNU 4.6.2
+ -- Check for working C compiler: /usr/bin/gcc
+ -- Check for working C compiler: /usr/bin/gcc -- works
+ ...
+ $ \textcolor{cmakered}{ninja}
+ ...
+ [6/6] Linking C executable Acrodictlibre
+ $ ./Acrolibre toulibre
+\end{Verbatim}
+}
+
+\begin{frame}[fragile]
+\frametitle{Generating \& building}
+Building with CMake and \only<1>{\textcolor{cmakeblue}{make}}\only<2>{\textcolor{cmakered}{ninja}} is easy:
+\begin{center}
+\only<1>{\genmake}\only<2>{\genninja}
 \end{center}
+\onslide<1->{
 \begin{alertblock}{Source tree vs Build tree}
 Even the most simple project should never mix-up sources
 with generated files. CMake supports \emph{out-of-source} build.
-\end{alertblock}
+\end{alertblock}}
 \end{frame}
 
 \begin{frame}[fragile]
