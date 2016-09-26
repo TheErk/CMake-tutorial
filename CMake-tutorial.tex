@@ -1845,6 +1845,7 @@ find modules or anything else inside \fname{CMakeLists.txt}
 \begin{block}{Installed External package}
 The previous examples suppose that you have the package you are
 looking for on your host.
+\vspace*{0.4cm}
 \begin{itemize}
 \item you did install the runtime libraries
 \item you did install eventual developer libraries, headers and tools
@@ -1898,27 +1899,30 @@ $ cmake --help-module ExternalProject
 
 \begin{frame}[fragile]
 \frametitle{Command mode}
-Just try:
 \begin{Verbatim}[commandchars=\\\{\},fontsize=\tiny,numbers=left,frame=topline,label=list of command mode commands]
-$ cmake -E
-CMake Error: cmake version 2.8.7
-Usage: cmake -E [command] [arguments ...]
+  $ cmake -E
+CMake Error: cmake version 3.6.2
+Usage: cmake -E <command> [arguments...]
 Available commands: 
-  chdir dir cmd [args]...   - run command in a given directory
+  chdir dir cmd [args...]   - run command in a given directory
   compare_files file1 file2 - check if file1 is same as file2
-  copy file destination     - copy file to destination (either file or directory)
-  copy_directory source destination   - copy directory 'source' content to directory 'destination'
-  copy_if_different in-file out-file  - copy file if input has changed
-  echo [string]...          - displays arguments as text
-  echo_append [string]...   - displays arguments as text but no new line
+  copy <file>... destination  - copy files to destination (either file or directory)
+  copy_directory <dir>... destination   - copy content of <dir>... directories to 'destination' directory
+  copy_if_different <file>... destination  - copy files if it has changed
+  echo [<string>...]        - displays arguments as text
+  echo_append [<string>...] - displays arguments as text but no new line
+  env [--unset=NAME]... [NAME=VALUE]... COMMAND [ARG]...
+                            - run command in a modified environment
   environment               - display the current environment
-  make_directory dir        - create a directory
-  md5sum file1 [...]        - compute md5sum of files
-  remove [-f] file1 file2 ... - remove the file(s), use -f to force it
+  make_directory <dir>...   - create parent and <dir> directories
+  md5sum <file>...          - create MD5 checksum of files
+  remove [-f] <file>...     - remove the file(s), use -f to force it
   remove_directory dir      - remove a directory and its contents
   rename oldname newname    - rename a file or directory (on one volume)
-  tar [cxt][vfz][cvfj] file.tar file/dir1 file/dir2 ... - create a tar archive
-  time command [args] ...   - run command and return elapsed time
+  tar [cxt][vf][zjJ] file.tar [file/dir1 file/dir2 ...]
+                            - create or extract a tar or zip archive
+  sleep <number>...         - sleep for given number of seconds
+  time command [args...]    - run command and return elapsed time
   touch file                - touch a file.
   touch_nocreate file       - touch a file but do not create it.
 Available on UNIX only:
@@ -1990,6 +1994,20 @@ using a previously installed CMake.
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Portable script for building ROSACE Case Study}
+Another example taken from the ``\emph{ROSACE Open Source Case Study}'' may be found here
+see \href{https://svn.onera.fr/schedmcore/branches/ROSACE_CaseStudy/prelude_implementations/instructions/ROSACE-CaseStudy-auto.cmake}{ROSACE-CaseStudy-auto.cmake}
+
+The script:
+\begin{itemize}
+\item Download or checkout \href{https://cavale.enseeiht.fr/redmine/projects/lustrec}{Lustre} compiler and build it
+\item Download or checkout \href{https://forge.onera.fr/projects/prelude}{Prelude} compiler and build it
+\item Download or checkout \href{http://sites.onera.fr/schedmcore/}{SchedMCore} toolsuit and build it
+\item Checkout the \href{http://sites.onera.fr/schedmcore/ROSACE}{ROSACE Case Study} and build it using the previously built tools.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
 \frametitle{Build specific commands}
 \begin{itemize}
 \item create executable or library: \lstinline!add_executable!, \lstinline!add_library!
@@ -2001,7 +2019,7 @@ using a previously installed CMake.
       \lstinline!set_target_properties!,
       \lstinline!set_source_files_properties!,
       \lstinline!set_directory_properties!,
-      \lstinline!set_tests_properties!: \alert{190+} different properties may be used.
+      \lstinline!set_tests_properties!: \alert{300+} different properties may be used.
 \end{itemize}
 \begin{Verbatim}
 $ cmake --help-property-list
@@ -2060,6 +2078,7 @@ are used for the source file itself (which may be involved in several targets).
 \begin{block}{Custom}
 Custom targets and custom commands are a way to create a \emph{target}
 which may be used to execute arbitrary commands at \alert{Build-time}.
+\vspace*{0.4cm}
 \begin{itemize}
 \item for target  : \lstinline!add_custom_target!
 \item for command : \lstinline!add_custom_command!, in order to add some
@@ -2173,35 +2192,8 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../totally-free/Toolchain-cross-mingw32-linux.cmake
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Linux to Win32 Toolchain example}
-\begin{lstlisting}[basicstyle=\tiny,numbers=left]
-# the name of the target operating system
-SET(CMAKE_SYSTEM_NAME Windows)
-# Choose an appropriate compiler prefix
-# for classical mingw32 see http://www.mingw.org/
-#set(COMPILER_PREFIX "i586-mingw32msvc")
-# for 32 or 64 bits mingw-w64 see http://mingw-w64.sourceforge.net/
-set(COMPILER_PREFIX "i686-w64-mingw32")
-#set(COMPILER_PREFIX "x86_64-w64-mingw32"
-
-# which compilers to use for C and C++
-find_program(CMAKE_RC_COMPILER NAMES ${COMPILER_PREFIX}-windres)
-#SET(CMAKE_RC_COMPILER ${COMPILER_PREFIX}-windres)
-find_program(CMAKE_C_COMPILER NAMES ${COMPILER_PREFIX}-gcc)
-#SET(CMAKE_C_COMPILER ${COMPILER_PREFIX}-gcc)
-find_program(CMAKE_CXX_COMPILER NAMES ${COMPILER_PREFIX}-g++)
-#SET(CMAKE_CXX_COMPILER ${COMPILER_PREFIX}-g++)
-
-# here is the target environment located
-SET(USER_ROOT_PATH /home/erk/erk-win32-dev)
-SET(CMAKE_FIND_ROOT_PATH  /usr/${COMPILER_PREFIX} ${USER_ROOT_PATH})
-# adjust the default behaviour of the FIND_XXX() commands:
-# search headers and libraries in the target environment, search
-# programs in the host environment
-set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-\end{lstlisting}
+  \frametitle{Linux to Windows Toolchain example}
+  \lstinputlisting[basicstyle=\tiny,numbers=left]{examples/totally-free/Toolchain-cross-linux.cmake}
 \end{frame}
 
 \subsection{Export your project}
@@ -2216,7 +2208,7 @@ as a build system.
 
 No more time for that today sorry, see:
 
-\url{http://www.cmake.org/Wiki/CMake/Tutorials/Exporting_and_Importing_Targets}
+\url{https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html\#creating-packages}
 \end{frame}
 
 \part{CPack}
@@ -2352,13 +2344,12 @@ For a CMake enabled project one can run CPack in two ways:
 
       \fname{\$ cpack -G RPM}
 \end{enumerate}
-Currently cpack has [almost] no builtin documentation support
-besides \fname{cpack --help} (work is underway though), thus
-the best CPack documentation is currently found on the Wiki:
+The CPack documentation is currently found on the Wiki or
+on the CPack specific modules:
 \begin{itemize}
-\item \url{http://www.cmake.org/Wiki/CMake:CPackConfiguration}
-\item \url{http://www.cmake.org/Wiki/CMake:CPackPackageGenerators}
-\item \url{http://www.cmake.org/Wiki/CMake:Component_Install_With_CPack}
+\item \url{https://cmake.org/Wiki/CMake:CPackPackageGenerators}
+\item \url{https://cmake.org/Wiki/CMake:Component_Install_With_CPack}
+\item \fname{cpack --help-module CPackXXX} with CPack, CPackComponent, CPackRPM, CPackDEB, CPackIFW, CPackWIX, \ldots
 \end{itemize}
 
 Whichever way you call it, the CPack steps are:
@@ -2630,7 +2621,7 @@ on all CMake supported platforms through \fname{libarchive}:
 \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[allowframebreaks]
 \frametitle{Linux-friendly generators}
 \begin{itemize}
 \item Tar-kind archive generators
@@ -2654,10 +2645,10 @@ Those generators are \alert{no replacement} for official packaging tools.
 \frametitle{Windows-friendly generators}
 \begin{itemize}
 \item Zip archive generator
-\item NullSoft System Installer generator (\url{http://nsis.sourceforge.net/}
+\item NullSoft System Installer generator: \url{http://nsis.sourceforge.net/}
 
       Supports component installation, produces nice GUI installer.
-\item WiX installer \url{http://wixtoolset.org/}
+\item WiX installer: \url{http://wixtoolset.org/}
 
   Windows Installer XML which produces MSI.
 \item IFW: Qt Installer framework
@@ -2674,15 +2665,13 @@ Those generators are \alert{no replacement} for official packaging tools.
 \item PackageMaker
 \item Bundle
 \item OSXX11
+\item may be Qt IFW as well...
 \end{itemize}
 \end{multicols}
 \begin{alertblock}{Don't ask me}
 I'm not a Mac OS user and I don't know them.
-Go and read the Wiki or ask on the ML.
-
-\url{http://www.cmake.org/Wiki/CMake:CPackPackageGenerators}
-
-\url{http://www.cmake.org/cmake/help/mailing.html}
+Go and read the CPack doc or ask on the ML.
+\url{https://cmake.org/mailing-lists/}
 \end{alertblock}
 \end{frame}
 
@@ -2718,7 +2707,7 @@ More detailed documentation here:
       (i.e. they are \fname{MONOLITHIC})
 \item Some produce a single package file containing all components.
 
-      (e.g. NSIS)
+      (e.g. NSIS, WiX, Qt IFW)
 \item Others produce several package files containing one or several components.
 
       (e.g. ArchiveGenerator, RPM, DEB)
@@ -2765,7 +2754,7 @@ In the meantime:
 \section{References}
 \begin{frame}[allowframebreaks]
 \frametitle{References}
-\nocite{CMakeBookv6,CDash:Home,CMake:Home,CMake:Wiki,KDE:Techbase:CMake}
+\nocite{CMakeBookv6,CDash:Home,CMake:Home,CMake:Wiki,KDE:Techbase:CMake,CMake:Documentation,LLVM:CMakePrimer}
 \bibliographystyle{plain}
 \bibliography{CMake-biblio}
 \end{frame}
