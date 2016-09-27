@@ -1940,6 +1940,7 @@ It contains general purpose constructs:
 \lstinline!if,elseif,else,endif!,
 \lstinline!foreach!,
 \lstinline!while!, \lstinline!break!
+see \href{https://cmake.org/cmake/help/latest/manual/cmake-language.7.html}{cmake-language(7}
 \end{block}
 Remember:
 \begin{Verbatim}[fontsize=\tiny,numbers=left]
@@ -2011,7 +2012,7 @@ The script:
 \frametitle{Build specific commands}
 \begin{itemize}
 \item create executable or library: \lstinline!add_executable!, \lstinline!add_library!
-\item add compiler/linker definitions/options: \lstinline!add_definition!, \lstinline!include_directories!,
+\item add compiler/linker definitions/options: \lstinline!add_definitions!, \lstinline!include_directories!,
       \lstinline!target_link_libraries!
 \item powerful installation specification: \lstinline!install!
 \item probing command: \lstinline!try_compile!, \lstinline!try_run!
@@ -2019,7 +2020,7 @@ The script:
       \lstinline!set_target_properties!,
       \lstinline!set_source_files_properties!,
       \lstinline!set_directory_properties!,
-      \lstinline!set_tests_properties!: \alert{300+} different properties may be used.
+      \lstinline!set_tests_properties!, \lstinline!set_property!: \alert{300+} different properties may be used.
 \end{itemize}
 \begin{Verbatim}
 $ cmake --help-property-list

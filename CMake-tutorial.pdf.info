@@ -1,5 +1,5 @@
 DocumentTitle = "CMake Tutorial"
-AvailableTransitions = [Crossfade,PagePeel,WipeLeft,WipeDown,WipeRight,WipeUp,WipeBlobs,SlideUp,SlideDown,SlideLeft,SlideRight,]
+AvailableTransitions = [Crossfade,PagePeel,WipeLeft,WipeDown,WipeRight,WipeUp,WipeBlobs]
 #Fullscreen = True
 PageProps = {
 1 : {
@@ -57,6 +57,7 @@ PageProps = {
       'transition': None
     },
 14 : {
+      'overview' : False,
       'transition': None
     },
 15 : {
@@ -85,42 +86,54 @@ PageProps = {
     },
 23 : {
       'title': " Basic CMake usage",
+      'overview' : False,
       'transition': None
     },
 24 : {
+      'title': " Basic CMake usage: A build system generator",
       'transition': None
     },
 25 : {
+      'overview' : False,
       'transition': None
     },
 26 : {
-      'transition': None
+      'overview' : False,
+      'transition': Crossfade
     },
 27 : {
-      'transition': None
+      'overview' : False,
+      'transition': Crossfade
     },
 28 : {
-      'transition': None
+      'overview' : False,
+      'transition': SlideRight
     },
 29 : {
-      'transition': None
+      'overview' : False,
+      'transition':SlideLeft
     },
 30 : {
-      'transition': None
+      'transition': SlideRight
     },
 31 : {
+      'overview' : False,
       'transition': None
     },
 32 : {
+      'overview' : False,
       'transition': None
     },
 33 : {
+      'overview' : False,
       'transition': None
     },
 34 : {
+      'overview' : False,
       'transition': None
     },
 35 : {
+      'overview' : False,
       'transition': None
     },
 36 : {
@@ -139,24 +152,30 @@ PageProps = {
       'transition': None
     },
 41 : {
+      'overview' : False,
       'transition': None
     },
 42 : {
+      'overview' : False,
       'transition': None
     },
 43 : {
+      'overview' : False,
       'transition': None
     },
 44 : {
+      'overview' : False,
       'transition': None
     },
 45 : {
+      'overview' : False,
       'transition': None
     },
 46 : {
       'transition': None
     },
 47 : {
+      'overview' : False,
       'transition': None
     },
 48 : {
@@ -172,12 +191,15 @@ PageProps = {
       'transition': None
     },
 52 : {
+      'overview' : False,
       'transition': None
     },
 53 : {
+      'overview' : False,
       'transition': None
     },
 54 : {
+      'overview' : False,
       'transition': None
     },
 55 : {
@@ -190,6 +212,7 @@ PageProps = {
       'transition': None
     },
 58 : {
+      'overview' : False,
       'transition': None
     },
 59 : {
@@ -214,15 +237,19 @@ PageProps = {
       'transition': None
     },
 66 : {
+      'overview' : False,
       'transition': None
     },
 67 : {
+      'overview' : False,
       'transition': None
     },
 68 : {
+      'overview' : False,
       'transition': None
     },
 69 : {
+      'overview' : False,
       'transition': None
     },
 70 : {
@@ -259,10 +286,12 @@ PageProps = {
       'transition': None
     },
 81 : {
+      'overview' : False,
       'title': " Discovering environment specificities",
       'transition': None
     },
 82 : {
+      'overview' : False,
       'title': " Handling platform specificities",
       'transition': None
     },
@@ -291,6 +320,7 @@ PageProps = {
       'transition': None
     },
 91 : {
+      'overview' : False,
       'title': " Working with external packages",
       'transition': None
     },
@@ -337,13 +367,16 @@ PageProps = {
       'transition': None
     },
 106 : {
+      'overview' : False,
       'title': " More CMake scripting",
       'transition': None
     },
 107 : {
+      'overview' : False,
       'transition': None
     },
 108 : {
+      'overview' : False,
       'transition': None
     },
 109 : {
@@ -380,6 +413,7 @@ PageProps = {
       'transition': None
     },
 120 : {
+      'overview' : False,
       'title': " Custom commands",
       'transition': None
     },
@@ -396,6 +430,7 @@ PageProps = {
       'transition': None
     },
 125 : {
+      'overview' : False,
       'title': " Generated files",
       'transition': None
     },
@@ -403,6 +438,7 @@ PageProps = {
       'transition': None
     },
 127 : {
+      'overview' : False,
       'transition': None
     },
 128 : {
@@ -412,10 +448,12 @@ PageProps = {
       'transition': None
     },
 130 : {
+      'overview' : False,
       'title': " Advanced CMake usage",
       'transition': None
     },
 131 : {
+      'overview' : False,
       'title': " Cross-compiling with CMake",
       'transition': None
     },
@@ -426,6 +464,7 @@ PageProps = {
       'transition': None
     },
 134 : {
+      'overview' : False,
       'title': " Export your project",
       'transition': None
     },
@@ -433,10 +472,7 @@ PageProps = {
       'transition': None
     },
 136 : {
-      'title': " CPack",
-      'transition': None
-    },
-136 : {
+      'overview' : False,
       'title': " CPack",
       'transition': None
     },
@@ -444,10 +480,12 @@ PageProps = {
       'transition': None
     },
 138 : {
+      'overview' : False,
       'title': " CPack with CMake",
       'transition': None
     },
 139 : {
+      'overview' : False,
       'transition': None
     },
 140 : {
@@ -481,24 +519,31 @@ PageProps = {
       'transition': None
     },
 150 : {
+      'overview' : False,
       'transition': None
     },
 151 : {
+      'overview' : False,
       'transition': None
     },
 152 : {
+      'overview' : False,
       'transition': None
     },
 153 : {
+      'overview' : False,
       'transition': None
     },
 154 : {
+      'overview' : False,
       'transition': None
     },
 155 : {
+      'overview' : False,
       'transition': None
     },
 156 : {
+      'overview' : False,
       'transition': None
     },
 157 : {
@@ -508,6 +553,7 @@ PageProps = {
       'transition': None
     },
 159 : {
+      'overview' : False,
       'title': " Various package generators",
       'transition': None
     },
@@ -533,14 +579,17 @@ PageProps = {
       'transition': None
     },
 167 : {
+      'overview' : False,
       'title': " CTest and CDash",
       'transition': None
     },
 167 : {
+      'overview' : False,
       'title': " Systematic Testing",
       'transition': None
     },
 168 : {
+      'overview' : False,
       'title': " CTest submission to CDash",
       'transition': None
     },
@@ -548,6 +597,11 @@ PageProps = {
       'transition': None
     },
 170 : {
+      'overview' : False,
+      'title': " References",
+      'transition': None
+    },
+171 : {
       'title': " References",
       'transition': None
     },
