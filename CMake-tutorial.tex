@@ -2197,6 +2197,33 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../totally-free/Toolchain-cross-mingw32-linux.cmake
   \lstinputlisting[basicstyle=\tiny,numbers=left]{examples/totally-free/Toolchain-cross-linux.cmake}
 \end{frame}
 
+\subsection{Handling standard language features}
+\begin{frame}[fragile]
+\frametitle{Selecting language standard}
+
+Sometimes one needs to select a required programming language standard level like C99 or C++11.
+The command line option used to select the appropriate standard vary from one compiler to another.
+
+There exist CMake variables controlling this are:
+\begin{itemize}
+\item for C++: \lstinline!CMAKE_CXX_STANDARD!, \lstinline!CMAKE_CXX_STANDARD_REQUIRED!
+\item for C: \lstinline!CMAKE_C_STANDARD!, \lstinline!CMAKE_C_STANDARD_REQUIRED!
+\end{itemize}
+
+See a nice tutorial
+{\small \url{https://crascit.com/2015/03/28/enabling-cxx11-in-cmake/}}
+giving more detailed usage example for C++11.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Enabling/selecting language feature}
+Sometimes requiring a whole standard support is too constraining since one only requires a specific langage feature
+which may be supported by the compiler long before it supports the whole standard requirements.
+
+Since CMake 3.1 one can inspect and enable language features:
+\url{https://cmake.org/cmake/help/latest/manual/cmake-compile-features.7.html}
+\end{frame}
+
 \subsection{Export your project}
 \begin{frame}
 \frametitle{Exporting/Import your project}
