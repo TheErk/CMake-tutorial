@@ -495,7 +495,7 @@ Scale is based on the average worldwide request traffic searching for CMake, Aut
 \frametitle{The CMake workflow}
 \begin{enumerate}
 \onslide<2->{\item \emph{CMake time}: CMake is running \& processing \fname{CMakeLists.txt}}
-\onslide<3->{\item \emph{Build time}: the build tool runs and invokes (at least) the compiler}
+\onslide<3->{\item \emph{Build time}: the build tool (make, ninja, ...) runs and invokes (at least) the compiler}
 \onslide<4->{\item \emph{Install time}: the compiled binaries are installed
 
              i.e. from build area to an install location.
@@ -506,7 +506,7 @@ Scale is based on the average worldwide request traffic searching for CMake, Aut
 \onslide<1->{
 \begin{alertblock}{When do things take place?}
 CMake is a \emph{generator} which means it does not compile (i.e. build) the sources,
-the underlying build tool (make, Ninja, XCode, Visual Studio\ldots) does.
+the underlying build tool (make, ninja, XCode, Visual Studio\ldots) does.
 \end{alertblock}
 }
 \end{frame}
@@ -722,7 +722,7 @@ All doc generated using \href{http://www.sphinx-doc.org/en/stable/builders.html}
 QtHelp file as well:\\
 \begin{small}
 \begin{enumerate}
-\item get QtHelp file from CMake: \url{https://cmake.org/cmake/help/v3.6/CMake.qch}
+\item get QtHelp file from CMake: \url{https://cmake.org/cmake/help/v3.7/CMake.qch}
 
       and copy it to \texttt{CMake-tutorial/examples/}
 \item use CMake.qhcp you may find in the source of this tutorial:
